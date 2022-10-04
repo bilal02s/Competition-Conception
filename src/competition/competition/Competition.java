@@ -36,7 +36,12 @@ public abstract class Competition {
         return this.competitors.size();
     }
 
-    public abstract Map<Competitor, Competitor> play();
+    public void play() {
+        this.play(this.competitors);
+    }
+
+    protected abstract void play(List<Competitor> players);
+    protected abstract void playMatch(Competitor c1, Competitor c2);
 
     /**
         returns the hasmap which maps each player in the competiton to his result expressed as an integer, sorted in descending order.
