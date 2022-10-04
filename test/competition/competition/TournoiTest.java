@@ -43,6 +43,56 @@ public class TournoiTest extends CompetitionTest {
         assert(sommeVictoire == (n-1));
     }
 
+    /**
+        test if the static method isPowerOf2 return true when given an integer that is a power of 2.
+     */
+    @Test 
+    public void test1IsPowerOf2(){
+        assertTrue(Tournoi.isPowerOf2(2));
+        assertTrue(Tournoi.isPowerOf2(4));
+        assertTrue(Tournoi.isPowerOf2(8));
+        assertTrue(Tournoi.isPowerOf2(16));
+        assertTrue(Tournoi.isPowerOf2(32));
+    }
+
+    /**
+        test if the static method isPowerOf2 return false when given an integer that is not a power of 2.
+     */
+    @Test 
+    public void test2IsPowerOf2(){
+        assertFalse(Tournoi.isPowerOf2(3));
+        assertFalse(Tournoi.isPowerOf2(5));
+        assertFalse(Tournoi.isPowerOf2(7));
+        assertFalse(Tournoi.isPowerOf2(10));
+        assertFalse(Tournoi.isPowerOf2(30));
+    }
+
+    /**
+        test if the static method getPowerOf2 return the value that when 2 is raised to power of that value gives the integer given in the parameter.
+        given thaat the integer given in parameter is actually a power of 2.
+     */
+    @Test 
+    public void testGetPowerOfTwo(){
+        try{
+            assertSame(Tournoi.getPowerOf2(2), 1);
+            assertSame(Tournoi.getPowerOf2(4), 2);
+            assertSame(Tournoi.getPowerOf2(8), 3);
+            assertSame(Tournoi.getPowerOf2(16), 4);
+            assertSame(Tournoi.getPowerOf2(32), 5);
+        }
+        catch(Exception e){
+            fail();
+        }
+    }
+
+    /**
+        test if the static function getPowerOf2 raisse an exception when given an integer that is not a power of 2.
+     */
+    @Test (expected = IntegerNotPowerOf2Exception.class)
+    public void testGetPowerOfTwoException() throws IntegerNotPowerOf2Exception {
+        Tournoi.getPowerOf2(3);
+    }
+
     public static junit.framework.Test suite() {
       return new junit.framework.JUnit4TestAdapter(competition.competition.TournoiTest.class);
     }

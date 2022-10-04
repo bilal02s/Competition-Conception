@@ -25,7 +25,7 @@ public abstract class CompetitionTest {
             this.comp = this.createComp(this.joueurs);
         }
         catch(Exception e){
-            //fail();
+            fail();
         }
         
     }

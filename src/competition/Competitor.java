@@ -24,7 +24,7 @@ public class Competitor {
         @param o the object to be tested.
         @return True if the two objects are equal, False otherwise.
      */
-    public boolean Equals(Object o){
+    public boolean equals(Object o){
         if(o instanceof Competitor){
             Competitor other = (Competitor) o;
             return this.getName().equals(other.getName());
