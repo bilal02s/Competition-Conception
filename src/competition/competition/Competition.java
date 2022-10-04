@@ -1,7 +1,10 @@
 package competition.competition;
 
 import java.util.*;
+import util.*;
 import competition.*;
+import competition.exception.*;
+import competition.match.*;
 
 public abstract class Competition {
     protected final List<Competitor> competitors;
@@ -10,8 +13,14 @@ public abstract class Competition {
     /**
         initialise the attribut competitors with the players given parameter.
         initialise the hashmap results by putting inside of it all the players given in parameter, and assigning a value of zero to their corresponding scores.
+        raises an exception if the number of players in the list is less than 2.
+        @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
-    public Comptition(List<Competitor> competitors) {
+    public Competition(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
+        if(competitors.size() < 2){
+            throw new InsufficientNumberOfPlayersException("A competition must have at least two players.");
+        }
+
         this.competitors = competitors;
         this.results = new HashMap<Competitor, Integer>();
 
@@ -41,13 +50,30 @@ public abstract class Competition {
     }
 
     protected abstract void play(List<Competitor> players);
-    protected abstract void playMatch(Competitor c1, Competitor c2);
 
     /**
-        returns the hasmap which maps each player in the competiton to his result expressed as an integer, sorted in descending order.
+        plays a type of match between the two competitors given in parameter.
+        after receiving the winner, his score is incremented by one.
+        the winner is returned.
+        @param c1 first competitor
+        @param c2 second competitor
+        @return the winner between the two competitors
+     */
+    protected Competitor playMatch(Competitor c1, Competitor c2) {
+        Match match = new RandomWinner();
+        Competitor winner = match.playMatch(c1, c2);
+
+        int oldScore = this.results.get(winner);
+        this.results.put(winner, oldScore + 1);
+
+        return winner;
+    }
+
+    /**
+        returns the hashmap which maps each player in the competiton to his result expressed as an integer, sorted in descending order.
         @return sorted map of the results.
      */
-    public Map<Competitor, Integer> ranking(Map<Competitor, Integer> results) {
-        return MapUtil.sortByDescendingValue(results);
+    public Map<Competitor, Integer> ranking() {
+        return MapUtil.sortByDescendingValue(this.results);
     }
 }

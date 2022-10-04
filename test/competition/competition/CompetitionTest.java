@@ -3,13 +3,15 @@ package competition.competition;
 import static org.junit.Assert.*;
 import org.junit.*;
 import java.util.*;
+import competition.*;
 import competition.competition.*;
+import competition.exception.*;
 
 public abstract class CompetitionTest {
     protected Competition comp;
     protected List<Competitor> joueurs;
 
-    protected abstract Competition createComp(List<Competitor> joueurs);
+    protected abstract Competition createComp(List<Competitor> joueurs) throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException;
 
     @Before 
     public void init() {
@@ -18,23 +20,39 @@ public abstract class CompetitionTest {
         this.joueurs.add(new Competitor("tata"));
         this.joueurs.add(new Competitor("tutu"));
         this.joueurs.add(new Competitor("tati"));
-        this.comp = this.createComp(this.joueurs);
+
+        try{
+            this.comp = this.createComp(this.joueurs);
+        }
+        catch(Exception e){
+            //fail();
+        }
+        
     }
 
     /**
         the constructor does two things, initialise attribut players to be equal to the players given in parameter,
         assign to each player a score of zero at the beginning since no matchs have been played.
         we have to test these two things.
+        Constructor test1
      */
     @Test 
-    public void testConstructor() {
+    public void test1Constructor() {
         //we have to check if we have the correct players in the competition
         //we convert arrayList to sets in order to ignore the initial order between players.
-        Set<Competitor> joueursDansCompetition = Set<Competitor>(this.comp.getPlayers());
-        Set<Competitor> joueursInitial = Set<Competitor>(this.joueurs);
+        Set<Competitor> joueursDansCompetition = new HashSet<Competitor>(this.comp.getPlayers());
+        Set<Competitor> joueursInitial = new HashSet<Competitor>(this.joueurs);
         assertEquals(joueursDansCompetition, joueursInitial);
 
-        //we need to verify that all match scores are zero.
+        
+    }
+
+    /**
+        the constructor assign to each player a score of zero at the beginning since no matchs have been played.
+        Constructor test2
+     */
+    @Test public void test2Constructor() {
+        //we need to verify that all match scores are assigned to zero at the beginning.
         Map<Competitor, Integer> ranking = this.comp.ranking();
         for (int i : ranking.values()){
             assert(i == 0);
@@ -42,12 +60,33 @@ public abstract class CompetitionTest {
     }
 
     /**
-        testing if the method getPlayers returns the correct players that arer present is the competition.
+        the constructor raise an exception if the given list of players is empty.
+        we test if the exception is raised
+     */
+    @Test (expected = InsufficientNumberOfPlayersException.class)
+    public void test1ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
+        List<Competitor> players = new ArrayList<Competitor>();
+        this.comp = this.createComp(players);
+    }
+
+    /**
+        the constructor raise an exception if the given list contains less than two players.
+        we test if the exception is raised when giving a list with only one player.
+     */
+    @Test (expected = InsufficientNumberOfPlayersException.class)
+    public void test2ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
+        List<Competitor> players = new ArrayList<Competitor>();
+        players.add(new Competitor("toto"));
+        this.comp = this.createComp(players);
+    }
+
+    /**
+        testing if the method getPlayers returns the correct players that are present is the competition.
      */
     @Test
     public void testGetPlayers() {
-        Set<Competitor> joueursDansCompetition = Set<Competitor>(this.comp.getPlayers());
-        Set<Competitor> joueursInitial = Set<Competitor>(this.joueurs);
+        Set<Competitor> joueursDansCompetition = new HashSet<Competitor>(this.comp.getPlayers());
+        Set<Competitor> joueursInitial = new HashSet<Competitor>(this.joueurs);
         assertEquals(joueursDansCompetition, joueursInitial);
     }
 
@@ -64,6 +103,9 @@ public abstract class CompetitionTest {
 
     @Test 
     public abstract void testPlay();
+
+    //@Test
+    //public abstract void testPlayMatch();
 
     /**
         testing if the method ranking returns a hashmap having each players his corresponding result, is descending order.
