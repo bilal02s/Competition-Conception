@@ -1,5 +1,5 @@
 CFLAGS=-ansi -Wall -pedantic
-src : competition exception match competitionPackage util
+src : competition exception match competitionPackage util main
 
 competition : src/competition/*.java 
 	javac -sourcepath src -d classes src/competition/*.java 
@@ -15,6 +15,9 @@ competitionPackage : src/competition/competition/*.java
 
 util : src/util/*.java
 	javac -sourcepath src -d classes src/util/*.java
+
+main : src/Main.java 
+	javac -sourcepath src -d classes src/Main.java
 
 test : testCompetition testMatch
 

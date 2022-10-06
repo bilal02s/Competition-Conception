@@ -1,8 +1,12 @@
 # L3S5-projet-coo
 
+## Monome membre
+Bilal EL SAFAH
 
+in this project, we are going to model a sportive competition consisting of different types of competition, model their corresponding rules, and the way the match are played.
+we have implemented one type of match where the winner is random, but the design is open for any other type that might be added in the future.
 
-## Getting started
+## How To
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
