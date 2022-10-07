@@ -40,7 +40,7 @@ public class TournoiTest extends CompetitionTest {
             sommeVictoire += i;
         }
 
-        assert(sommeVictoire == (n-1));
+        assertTrue(sommeVictoire == (n-1));
     }
 
     /**

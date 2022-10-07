@@ -27,7 +27,7 @@ public class ChampionnatTest extends CompetitionTest {
             sommeVictoire += i;
         }
 
-        assert(sommeVictoire == n*(n-1));
+        assertTrue(sommeVictoire == n*(n-1));
     }
 
     /*@Test 

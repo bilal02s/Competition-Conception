@@ -66,6 +66,9 @@ public abstract class Competition {
         int oldScore = this.results.get(winner);
         this.results.put(winner, oldScore + 1);
 
+        //print to the console
+        System.out.println(c1 + " vs " + c2 + " --> " + winner + " wins!");
+
         return winner;
     }
 

@@ -54,7 +54,8 @@ public class Tournoi extends Competition {
      */
     protected void play(List<Competitor> players) {
         //verify if we have the correct number of players, else exit the method.
-        //in this type of competition the number of players is a power of 2 : 2**x, the x value corresponds to the number of rounds played.
+        //in this type of competition the number of players is a power of 2 : 2**x, the x value corresponds to the number of rounds to be played.
+        //example: if there are 4 players, 4 = 2**2, then there will be 2 rounds in the tournament.
         int rounds;
         try {
             rounds = Tournoi.getPowerOf2(players.size());
@@ -64,9 +65,10 @@ public class Tournoi extends Competition {
             return;
         }
 
+        //we create a list which contains the players that will play against each other in the first round, aka all players.
+        List<Competitor> currentRoundPlayers = players;
+
         for (int round = 1; round <= rounds; round++){
-            //we create a list which contains the players that will play against each other in the current round.
-            List<Competitor> currentRoundPlayers = players;
             //we create a list in which we will add the winners from the first round, so that they will play in the next round
             List<Competitor> nextRoundPlayers = new ArrayList<Competitor>(); 
 
@@ -80,7 +82,9 @@ public class Tournoi extends Competition {
                 nextRoundPlayers.add(winner);
             }
 
+            //next round players will become the current players for the next round.
             currentRoundPlayers = nextRoundPlayers;
+            //next round players will become an empty list, to be filled in the next round.
             nextRoundPlayers = new ArrayList<Competitor>();
         }
     }

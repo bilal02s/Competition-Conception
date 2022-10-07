@@ -1,3 +1,5 @@
+package competition;
+
 import java.util.*;
 import competition.*;
 import competition.competition.*;
@@ -30,7 +32,7 @@ public class Main{
         }
 
         //selecting the type of competition
-        Competition competition = (args[1].equals("Tournament")) ? new Tournoi(players) : new Championnat(players);
+        Competition competition = (args[0].equals("Tournament")) ? new Tournoi(players) : new Championnat(players);
 
         //launching all the matchs
         competition.play();

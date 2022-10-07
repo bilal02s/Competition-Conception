@@ -55,7 +55,7 @@ public abstract class CompetitionTest {
         //we need to verify that all match scores are assigned to zero at the beginning.
         Map<Competitor, Integer> ranking = this.comp.ranking();
         for (int i : ranking.values()){
-            assert(i == 0);
+            assertTrue(i == 0);
         }
     }
 
