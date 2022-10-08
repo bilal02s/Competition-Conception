@@ -2,7 +2,7 @@ package competition;
 
 import java.util.*;
 import competition.*;
-import competition.competition.*;
+import competition.event.*;
 import competition.exception.*;
 
 public class Main{

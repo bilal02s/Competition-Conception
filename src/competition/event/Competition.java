@@ -1,4 +1,4 @@
-package competition.competition;
+package competition.event;
 
 import java.util.*;
 import util.*;

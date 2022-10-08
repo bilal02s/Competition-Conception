@@ -1,10 +1,10 @@
-package competition.competition;
+package competition.event;
 
 import static org.junit.Assert.*;
 import org.junit.*;
 import java.util.*;
 import competition.*;
-import competition.competition.*;
+import competition.event.*;
 import competition.exception.*;
 
 public abstract class CompetitionTest {

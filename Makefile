@@ -4,7 +4,7 @@ exec.jar : manifest
 	jar cvfe exec.jar manifest Main -C classes
 
 
-src : util competition exception match competitionPackage #main
+src : util competition exception match event #main
 
 competition : src/competition/*.java 
 	javac -sourcepath src -d classes src/competition/*.java 
@@ -15,8 +15,8 @@ exception : src/competition/exception/*.java
 match : src/competition/match/*.java 
 	javac -sourcepath src -d classes src/competition/match/*.java 
 
-competitionPackage : src/competition/competition/*.java 
-	javac -sourcepath src -d classes src/competition/competition/*.java 
+event : src/competition/event/*.java 
+	javac -sourcepath src -d classes src/competition/event/*.java 
 
 util : src/util/*.java
 	javac -sourcepath src -d classes src/util/*.java
@@ -26,8 +26,8 @@ util : src/util/*.java
 
 test : testCompetition testMatch
 
-testCompetition : test/competition/competition/*.java  
-	javac -classpath test4poo.jar test/competition/competition/*.java 
+testEvent : test/competition/event/*.java  
+	javac -classpath test4poo.jar test/competition/event/*.java 
 	
 testMatch : test/competition/match/*.java
 	javac -classpath test4poo.jar test/competition/match/*.java
