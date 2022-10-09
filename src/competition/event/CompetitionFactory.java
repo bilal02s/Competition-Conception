@@ -1,6 +1,8 @@
 package competition.event;
 
-import competition.competition.*;
+import java.util.*;
+import competition.*;
+import competition.event.*;
 import competition.exception.*;
 
 public class CompetitionFactory{
@@ -21,7 +23,7 @@ public class CompetitionFactory{
         }
 
         if(name.equalsIgnoreCase("Tournament")){
-            return new Tournament(players);
+            return new Tournoi(players);
         }
         else if(name.equalsIgnoreCase("League")){
             return new Championnat(players);

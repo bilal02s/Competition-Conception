@@ -94,6 +94,6 @@ public class TournoiTest extends CompetitionTest {
     }
 
     public static junit.framework.Test suite() {
-      return new junit.framework.JUnit4TestAdapter(competition.competition.TournoiTest.class);
+      return new junit.framework.JUnit4TestAdapter(competition.event.TournoiTest.class);
     }
 }

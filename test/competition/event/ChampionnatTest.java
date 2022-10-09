@@ -36,7 +36,7 @@ public class ChampionnatTest extends CompetitionTest {
     }*/
 
     public static junit.framework.Test suite() {
-      return new junit.framework.JUnit4TestAdapter(competition.competition.ChampionnatTest.class);
+      return new junit.framework.JUnit4TestAdapter(competition.event.ChampionnatTest.class);
     }
 
 }

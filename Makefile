@@ -24,7 +24,7 @@ util : src/util/*.java
 #main : src/Main.java 
 #	javac -sourcepath src -d classes src/Main.java
 
-test : testCompetition testMatch
+test : testEvent testMatch
 
 testEvent : test/competition/event/*.java  
 	javac -classpath test4poo.jar test/competition/event/*.java 
