@@ -42,7 +42,7 @@ public abstract class CompetitionTest {
         //we convert arrayList to sets in order to ignore the initial order between players.
         Set<Competitor> joueursDansCompetition = new HashSet<Competitor>(this.comp.getPlayers());
         Set<Competitor> joueursInitial = new HashSet<Competitor>(this.joueurs);
-        assertEquals(joueursDansCompetition, joueursInitial);
+        assertEquals(joueursInitial, joueursDansCompetition);
 
         
     }
@@ -87,7 +87,7 @@ public abstract class CompetitionTest {
     public void testGetPlayers() {
         Set<Competitor> joueursDansCompetition = new HashSet<Competitor>(this.comp.getPlayers());
         Set<Competitor> joueursInitial = new HashSet<Competitor>(this.joueurs);
-        assertEquals(joueursDansCompetition, joueursInitial);
+        assertEquals(joueursInitial, joueursDansCompetition);
     }
 
     /**

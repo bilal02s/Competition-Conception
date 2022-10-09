@@ -74,11 +74,11 @@ public class TournoiTest extends CompetitionTest {
     @Test 
     public void testGetPowerOfTwo(){
         try{
-            assertSame(Tournoi.getPowerOf2(2), 1);
-            assertSame(Tournoi.getPowerOf2(4), 2);
-            assertSame(Tournoi.getPowerOf2(8), 3);
-            assertSame(Tournoi.getPowerOf2(16), 4);
-            assertSame(Tournoi.getPowerOf2(32), 5);
+            assertSame(1, Tournoi.getPowerOf2(2));
+            assertSame(2, Tournoi.getPowerOf2(4));
+            assertSame(3, Tournoi.getPowerOf2(8));
+            assertSame(4, Tournoi.getPowerOf2(16));
+            assertSame(5, Tournoi.getPowerOf2(32));
         }
         catch(Exception e){
             fail();

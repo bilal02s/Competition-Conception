@@ -24,13 +24,18 @@ util : src/util/*.java
 #main : src/Main.java 
 #	javac -sourcepath src -d classes src/Main.java
 
-test : testEvent testMatch
+test : testCompetition testEvent testMatch
+
+testCompetition : test/competition/*.java 
+	javac -classpath test4poo.jar test/competition/*.java
 
 testEvent : test/competition/event/*.java  
 	javac -classpath test4poo.jar test/competition/event/*.java 
 	
 testMatch : test/competition/match/*.java
 	javac -classpath test4poo.jar test/competition/match/*.java
+
+# javadoc -d docs -subpackages vlille
 
 clean:
 	rm -f *.o output input data.bin

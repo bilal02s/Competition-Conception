@@ -65,22 +65,34 @@ public class CompetitionFactoryTest{
     }
 
     /**
-        test if the method getCompetition will return a tournament instance when given the correct string.
+        test if the method getCompetition will return a tournament instance when given the correct string,
+        ignoring case letters.
      */
      @Test 
      public void tournamentInstanceTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("Tournament", this.players);
+        Competition competition = this.factory.getCompetition("tournament", this.players);
+        assertTrue(competition instanceof Tournoi);
 
+        competition = this.factory.getCompetition("TourNamEnt", this.players);
+        assertTrue(competition instanceof Tournoi);
+
+        competition = this.factory.getCompetition("TOURNAMENT", this.players);
         assertTrue(competition instanceof Tournoi);
      }
 
      /**
         test if the method getCompetition will return a league instance when given the correct string.
+        ignoring case letters.
      */
      @Test 
      public void leagueInstanceTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("League", this.players);
+        Competition competition = this.factory.getCompetition("league", this.players);
+        assertTrue(competition instanceof Championnat);
 
+        competition = this.factory.getCompetition("LeAgUe", this.players);
+        assertTrue(competition instanceof Championnat);
+
+        competition = this.factory.getCompetition("LEAGUE", this.players);
         assertTrue(competition instanceof Championnat);
      }
 
@@ -91,11 +103,11 @@ public class CompetitionFactoryTest{
      public void InstancePlayersTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
         Competition competition = this.factory.getCompetition("Tournament", this.players);
 
-        assertSame(competition.getPlayers(), this.players);
+        assertSame(this.players, competition.getPlayers());
 
         competition = this.factory.getCompetition("League", this.players);
 
-        assertSame(competition.getPlayers(), this.players);
+        assertSame(this.players, competition.getPlayers());
      }
 
      public static junit.framework.Test suite() {
