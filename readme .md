@@ -8,7 +8,7 @@
 
 ---
 
-### Files
+## Files
 
 ```text
 l3s5-projet-coo/
@@ -51,12 +51,37 @@ l3s5-projet-coo/
 └── readme.md
 ```
 
-### Objectives
-*  Representing a competition
+## Objectives
+###  Representing a competition
 
-We are interested in the representation and manipulation of images. These images will consist of pixels characterized by a color representing a gray level.
+We are interested in the constructing a model to represent different types of competition. Each competition have its own rules, in terms of the minimum number of players that can participate, a constrain on the number of players in general (such as the obligation of it being a power of 2), and many other.
 
-*  Using arguments from the executing command
+modeling different types of matchs. For this version, we are only interested in having match in which the outcome is completely random with respect to the competing players.
+
+## Conception
+
+![UML](./UML/competition-sportive.png)
+
+   1. * As shown in the UML diagram, we model the          competition concept using an abstract class competition. This common mother class implements the common attributs and methods that will be later used in each competition type.  </br>
+      * Common attributs such as list of players, a map assigning each player a score to be retrieved at the end of the competition.  </br>
+      * Common methods such as getPlayers, play: its job is to execute the matchs and assign the final scores. </br>
+      ranking : get the rankings of the players.
+      * Throws an exception in case the given list of players contains less than two players
+
+   2. * Two inheriting classes Tournoi and Championnat which desginates respectively a tounamenent and a league.  </br>
+      * The main difference between these two classes is that each one of them organise match between participants in a different way.
+      * The players in a League plays againt all other players two times, which is taken care of in the protected method play(players : List<Competitor>).
+      * the players in a Tournament plays in a classical format of elimination, which is taken care of in the protected method play(players : List<Competitor>).
+      * Tournament class throws an exception in the construction if the number of given players is not a power of two, thus not compatible with a classical format.
+
+   3. * A factory design pattern have been implemented to take care of the choice and construction of the competitions instances.  </br>
+   factory's method getCompetition receives a string as first parameter, and depending on the value of that string returns the corresponding competition type.
+
+   4. * Competitors are modeled using the class Competitor.
+      * For this version, the role of competitors is limited, thus the class contains simply one attribut name, and methods getName(), toString() and equals().
+
+   5. * Matchs are modeled using the interface Match, all match must have a method playMatch receiving two competitors and returning either one of them as a winner.
+      * RandomWinner is a class implementing the interface Match. its playMatch chooses the winner randomly and independently of the competitors.
 
 
 ## How TO
