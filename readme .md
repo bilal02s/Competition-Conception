@@ -14,46 +14,52 @@
 l3s5-projet-coo/
 ├── src/
 │   └── competition/
-│       ├── competition/
-│       │   ├──Championnat.java
+│       ├── event/
+│       │   ├── Championnat.java
 │       │   ├── Competition.java
-|       |   └── Tournoi.java
+│       │   ├── Tournoi.java
+│       │   └── CompetitionFactory.java
 │       ├── exception/
 │       │   ├── InsufficientNumberOfPlayersException.java
 │       │   ├── IntegerNotPowerOf2Exception.java
 │       │   └── WrongNumberOfPlayersException.java
-|       ├── match/
-|       |   ├── Match.java
-|       |   └── RandomWinner.java
+│       ├── match/
+│       │   ├── Match.java
+│       │   └── RandomWinner.java
+│       │
 │       ├── Competitor.java
-│       ├── Main.java
+│       └── Main.java
 │   └── util/
 │       └── MapUtil.java
 ├── test/
 │   └── competition/
-│       ├── competition/
-|          ├── ChampionnatTest.java
-|          ├── CompetitionTest.java
-|          ├── TournoiTest.java
-|       ├── match/
-|
-|
+│       ├── event/
+│       │  ├── ChampionnatTest.java
+│       │  ├── CompetitionTest.java
+│       │  ├── TournoiTest.java
+│       |  └── CompetitionFactoryTest.java
+│       ├── match/
+│       │  └──RandomWinnerTest.java
+│       │
+│       └── CompetitorTest.java
+│
 │
 ├── exec.jar
-|   MakeFile
+│   MakeFile
 ├── manifest.
 ├── test4poo.jar
 └── readme.md
 ```
 
 ### Objectives
-*  Representing and Manipulating images
+*  Representing a competition
 
 We are interested in the representation and manipulation of images. These images will consist of pixels characterized by a color representing a gray level.
 
 *  Using arguments from the executing command
 
 
+## How TO
 
 ### Getting the files
 1. To compile and execute the files, you need to install [JDK Java SE](https://www.oracle.com/java/technologies/javase-downloads.html).
@@ -70,13 +76,17 @@ git pull
 ### Generate JavaDoc files
 * In a bash terminal
 
-1. To generate the Javadoc for the image package and all its sub packages:
+1. To generate the Javadoc for the competition package and all its sub packages:
 
-In the src directory, execute the following command:
+In the root directory of the project, execute the following command:
 ```bash
-javadoc -d ../docs -subpackage image
+   javadoc -d docs -subpackage competition
 ```
+or by executing:
 
+```bash 
+   make docs
+```
 
 You will notice a new directory docs.
 
@@ -87,11 +97,11 @@ You will notice a new directory docs.
 ### Compile .java files
 * In a bash terminal
 
-1. Go to the corresponding folder image/src
+1. Go to the root folder (the folder containing src and test directory)
 
-2. Compile all the .java file, and store them in the classes folder.
+2. Compile all the .java file, and store them in the classes folder, using the makefile.
 ```bash
-javac image/*.java -d ../classes
+   make src
 ```
 
 3. You will notice that the classes folder contains the structure of the packages containing the compiled files with a .class extension.
@@ -102,16 +112,20 @@ javac image/*.java -d ../classes
 ### Compile and execute the tests
 * In a bash terminal
 
-1. Go to image directory
+1. Go to the root folder (the folder containing src and test directory)
 
 2. To compile all the test files, excute the following command :
 ```bash
-javac -classpath test4poo.jar test/*.java
+   make test
 ```
 
-3. To Execute a test FileNameTest, execute the following command
+3. To Execute a test package.subPackage.FileNameTest, execute the following command
 ```bash
-java -jar test4poo.jar FileNameTest
+   java -jar test4poo.jar package.subPackage.FileNameTest
+```
+for example executing the test corresponding to Tournoi :
+```bash
+   java -jar test4poo.jar competition.event.TournoiTest
 ```
 
 4. A graphic interface will pop up. A green line means that all the tests have been passed correctly, a red line means that there are some tests that failed.
@@ -119,135 +133,54 @@ java -jar test4poo.jar FileNameTest
 
 
 ### Generate the executable .jar files
-1. Go to the image/classes directory, and execute the following command :
+1. Go to the root directory of the project, and execute the following command :
 ```bash
-jar cvfm ../image.jar ../manifest-image image images
+   jar cvfe exec.jar competition.Main -C classes competition -C classes util
+```
+* or by executing
+
+```bash
+   make exec.jar
 ```
 
-2. You will notice that an image.jar file has been created in image
+2. You will notice that an exec.jar file has been created.
 
 
 
 
 ### Execute the program
-* Without using the image.jar file
+* Without using the exec.jar file
 
-    1. Go to your image/classes directory
+   1. Go to the root directory
 
-    2. To execute the main class, there are diffrent arguments you can add:
+   2. To execute the main class, there are diffrent arguments you can add:
 
-        1. Default form:
+         1. precising the competition type as first parameter and then the player's names:
 
-           ```bash
-           java image.ImageMain
-           ```
+   ```bash
+           java -classpath classes competition.Main type player1 player2
+   ```
+   * Example:
+   ```bash
+           java -classpath classes competition.Main Tournament player1 player2
+   ```
 
-        2. precising the image file to use:
+   3. You will notice that the Main has been executed, the match are being played, and finally the results will be shown.
 
-           ```bash
-           java image.ImageMain fileName
-           ```
-           * Example:
-           ```bash
-           java image.ImageMain /images/saturn.pgm
-           ```
+* Using the exec.jar file
 
-        3. precising the image file to use and the threshold:
-
-           ```bash
-           java image.ImageMain fileName threshold
-           ```
-           * Example:
-           ```bash
-           java image.ImageMain /images/casablanca.pgm 20
-           ```
-
-        4. precising the image file to use, the threshold and the nbGrayLevels:
-
-           ```bash
-           java image.ImageMain fileName threshold nbGrayLevels
-           ```
-           * Example:
-           ```bash
-           java image.ImageMain /images/body.pgm 25 16
-           ```
-
-    3. You will notice that the ImageMain has been executed.
-
-    4. The following will apear in you bash terminal:
-       ```text
-       usage : java image.ImageMain fileName threshold nbGrayLevels (default : /images/chat.pgm 15 4)
-       ```
-
-    5. And five windows will pop up showing:
-
-        1. An Image with 3 rectangles with diffrent gray color
-
-        2. The same image but showing just the edges of the rectangles in black
-
-        3. The chosen image file
-
-        4. The same image file showing just the edges of the image in black
-
-        5. the same image with decreased gray colors
-
-* Using the image.jar file
-
-    1. Go to your image directory
+    1. Go to the root directory
 
     2. To execute the jar file, you can add the same arguments as above:
 
-        1. Default form:
+        1. precising the competition type as first parameter and then the player's names:
 
            ```bash
-           java -jar image.jar
+           java -jar exec.jar type player1 player2
            ```
-
-        2. precising the image file to use:
-
+            * Example:
            ```bash
-           java -jar image.jar fileName
-           ```
-           * Example:
-           ```bash
-           java -jar image.jar /images/hands.pgm
+           java -jar exec.jar Tournament player1 player2
            ```
 
-        3. precising the image file to use and the threshold:
-
-           ```bash
-           java -jar image.jar fileName threshold
-           ```
-           * Example:
-           ```bash
-           java -jar image.jar /images/frog.pgm 10
-           ```
-
-        4. precising the image file to use, the threshold and the nbGrayLevels:
-
-           ```bash
-           java -jar image.jar fileName threshold nbGrayLevels
-           ```
-           * Example:
-           ```bash
-           java -jar image.jar /images/storm.pgm 15 8
-           ```
-
-    3. You will notice that the ImageMain class has been executed.
-
-    4. The following will apear in you bash terminal:
-       ```text
-       usage : java image.ImageMain fileName threshold nbGrayLevels (default : /images/chat.pgm 15 4)
-       ```
-
-    5. And five windows will pop up showing:
-
-        1. An Image with 3 rectangles with diffrent gray color
-
-        2. The same image but showing just the edges of the rectangles in black
-
-        3. The chosen image file
-
-        4. The same image file showing just the edges of the image in black
-
-        5. the same image with decreased gray colors
+    3. You will notice that the Main has been executed, the match are being played, and finally the results will be shown.

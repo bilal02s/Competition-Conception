@@ -1,7 +1,7 @@
 CFLAGS=-ansi -Wall -pedantic
 
-exec.jar : manifest 
-	jar cvfe exec.jar manifest Main -C classes
+exec.jar : src/competition/Main.java
+	jar cvfe exec.jar competition.Main -C classes competition -C classes util
 
 
 src : util competition exception match event #main
