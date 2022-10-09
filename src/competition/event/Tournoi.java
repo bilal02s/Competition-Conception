@@ -8,8 +8,10 @@ import competition.exception.*;
 public class Tournoi extends Competition {
 
     /**
-        in the construction of the class, the number of players given in parameter must be a power of 2.
+        in the construction of the class, the number of players given in parameter must be a power of 2, and superior to 1.
         otherwise an exception is raised.
+        @param players List of participants
+        @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
         @throws WrongNumberOfPlayersException if the number of players is not a power of 2.
      */
     public Tournoi (List<Competitor> players) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
@@ -37,7 +39,7 @@ public class Tournoi extends Competition {
         returns the value for which, when 2 is powered by this value will be equal to the integer given in parameter.
         @param x integer, power of 2.
         @return the value of the log2(x).
-        @throws IntegerNotPowerOf2Exception
+        @throws IntegerNotPowerOf2Exception If the integer given in parameter is not a power of 2.
      */
     public static int getPowerOf2(int x) throws IntegerNotPowerOf2Exception{
         if (! Tournoi.isPowerOf2(x)) {

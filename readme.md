@@ -105,7 +105,7 @@ git pull
 
 In the root directory of the project, execute the following command:
 ```bash
-   javadoc -d docs -subpackage competition
+   javadoc competition -sourcepath src -d docs -subpackages competition
 ```
 or by executing:
 

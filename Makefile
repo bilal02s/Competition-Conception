@@ -35,7 +35,8 @@ testEvent : test/competition/event/*.java
 testMatch : test/competition/match/*.java
 	javac -classpath test4poo.jar test/competition/match/*.java
 
-# javadoc -d docs -subpackages vlille
+docs : src/competition/*.java
+	javadoc competition -sourcepath src -d docs -subpackages competition
 
 clean:
 	rm -f *.o output input data.bin

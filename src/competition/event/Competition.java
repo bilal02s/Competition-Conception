@@ -7,13 +7,14 @@ import competition.exception.*;
 import competition.match.*;
 
 public abstract class Competition {
-    protected final List<Competitor> competitors;
+    protected final List<Competitor> competitors; //List of Competitors
     protected Map<Competitor, Integer> results;
 
     /**
         initialise the attribut competitors with the players given parameter.
         initialise the hashmap results by putting inside of it all the players given in parameter, and assigning a value of zero to their corresponding scores.
         raises an exception if the number of players in the list is less than 2.
+        @param competitors List of participants.
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
     public Competition(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
@@ -45,10 +46,17 @@ public abstract class Competition {
         return this.competitors.size();
     }
 
+    /**
+        launch the matchs between all players.
+     */
     public void play() {
         this.play(this.competitors);
     }
 
+    /**
+        execute the match between players, with respect to the constrain of players matching.
+        @param players List of players.
+     */
     protected abstract void play(List<Competitor> players);
 
     /**

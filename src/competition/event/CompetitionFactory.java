@@ -14,7 +14,7 @@ public class CompetitionFactory{
         @param name the name of the chosen competition.
         @param players the list of players participating in the competition
         @return the instance of the chosen competition, null otherwise.
-        @throws WrongNumberOfPlayersExcection in the case when the number of players is not a power of 2 in a tournament.
+        @throws WrongNumberOfPlayersException in the case when the number of players is not a power of 2 in a tournament.
         @throws InsufficientNumberOfPlayersException in the case when the number of players is inferior to 2 in any competition type.
      */
     public Competition getCompetition(String name, List<Competitor> players) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
