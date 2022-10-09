@@ -1,5 +1,8 @@
 package competition.exception;
 
+/**
+ * Exception representing not enough players to start a competition. 
+ */
 public class InsufficientNumberOfPlayersException extends Exception{
 
     /**

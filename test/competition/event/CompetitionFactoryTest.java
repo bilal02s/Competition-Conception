@@ -97,7 +97,7 @@ public class CompetitionFactoryTest{
      }
 
      /**
-        test if the method getCompetition will return the competition type instance that contains the correct players given in parameter.
+        test if the method getCompetition will give the competition type instance the correct list of players given in parameter.
      */
      @Test 
      public void InstancePlayersTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{

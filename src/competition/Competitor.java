@@ -1,5 +1,8 @@
 package competition;
 
+/**
+ * Creates a competitor that participates in a competition.
+ */
 public class Competitor {
     private String name;
 

@@ -1,5 +1,8 @@
 package competition.exception;
 
+/**
+ * Exception thrown when an integer in question is not a power of two.
+ */
 public class IntegerNotPowerOf2Exception extends Exception{
 
     /**

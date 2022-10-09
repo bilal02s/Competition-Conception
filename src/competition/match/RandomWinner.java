@@ -4,6 +4,9 @@ import java.util.*;
 import competition.*;
 import competition.match.*;
 
+/**
+ * Creates a match where the outcome is random.
+ */
 public class RandomWinner implements Match{
 
     /**

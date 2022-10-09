@@ -4,6 +4,9 @@ import java.util.*;
 import competition.*;
 import competition.exception.*;
 
+/**
+ * Championnat representing a league.
+ */
 public class Championnat extends Competition {
 
     /**

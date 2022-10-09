@@ -6,8 +6,13 @@ import competition.*;
 import competition.exception.*;
 import competition.match.*;
 
+/**
+ * competition abstract class defining a competition's behavior.
+ */
 public abstract class Competition {
-    protected final List<Competitor> competitors; //List of Competitors
+    /** List of competitors */
+    protected final List<Competitor> competitors; 
+    /** result as integer mapped to each competitor */
     protected Map<Competitor, Integer> results;
 
     /**

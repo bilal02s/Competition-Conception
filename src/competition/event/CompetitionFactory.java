@@ -5,6 +5,10 @@ import competition.*;
 import competition.event.*;
 import competition.exception.*;
 
+/**
+ * factory design pattern, takes care of constructing competitions.
+ * @author Bilal el Safah
+ */
 public class CompetitionFactory{
 
     /**

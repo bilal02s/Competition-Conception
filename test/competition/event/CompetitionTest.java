@@ -81,6 +81,18 @@ public abstract class CompetitionTest {
     }
 
     /**
+        the constructor should not raise an exception if the given list contains two or more players.
+        we test if the construction is successful when giving a list with only two players.
+     */
+    @Test
+    public void test2ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
+        List<Competitor> players = new ArrayList<Competitor>();
+        players.add(new Competitor("toto"));
+        players.add(new Competitor("tata"));
+        this.comp = this.createComp(players);
+    }
+
+    /**
         testing if the method getPlayers returns the correct players that are present is the competition.
      */
     @Test
@@ -108,7 +120,7 @@ public abstract class CompetitionTest {
     //public abstract void testPlayMatch();
 
     /**
-        testing if the method ranking returns a hashmap having each players his corresponding result, is descending order.
+        testing if the method ranking returns a hashmap having each players his corresponding result, in descending order.
     */
     @Test
     public void testRanking() {

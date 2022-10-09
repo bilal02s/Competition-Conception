@@ -2,6 +2,9 @@ package competition.match;
 
 import competition.*;
 
+/**
+ * Match interface.
+ */
 public interface Match{
 
     /**

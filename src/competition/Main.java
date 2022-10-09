@@ -5,9 +5,18 @@ import competition.*;
 import competition.event.*;
 import competition.exception.*;
 
+/**
+ * The main program that launchs a competition with its participants.
+ */
 public class Main{
 
-    public static void main(String args[]) throws Exception{
+    /**
+        receives the competition type and the competitors in the args parameter as strings.
+        picks the corresponding competition type and instanciate it, and gives it the list of player after building it.
+        then launchs all the matchs between players, and prints the result to the terminal.
+        @param args the argument given in the terminal, expecting a competition name such as tournament or league, followed by the names of players.
+     */
+    public static void main(String args[]) {
         //creating the list of players, initially emtpy.
         List<Competitor> players = new ArrayList<Competitor>();
 

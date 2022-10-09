@@ -5,6 +5,9 @@ import java.lang.Math;
 import competition.*;
 import competition.exception.*;
 
+/**
+ * Tournoi representing a tournament.
+ */
 public class Tournoi extends Competition {
 
     /**
