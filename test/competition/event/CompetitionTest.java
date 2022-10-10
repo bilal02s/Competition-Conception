@@ -85,7 +85,7 @@ public abstract class CompetitionTest {
         we test if the construction is successful when giving a list with only two players.
      */
     @Test
-    public void test2ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
+    public void test3ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
