@@ -27,13 +27,13 @@ util : src/util/*.java
 test : testCompetition testEvent testMatch
 
 testCompetition : test/competition/*.java 
-	javac -classpath test4poo.jar test/competition/*.java
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/*.java
 
 testEvent : test/competition/event/*.java  
-	javac -classpath test4poo.jar test/competition/event/*.java 
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/event/*.java 
 	
 testMatch : test/competition/match/*.java
-	javac -classpath test4poo.jar test/competition/match/*.java
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/match/*.java
 
 docs : src/competition/*.java
 	javadoc competition -sourcepath src -d docs -subpackages competition

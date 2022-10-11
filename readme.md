@@ -146,14 +146,19 @@ You will notice a new directory docs.
 
 3. To Execute a test package.subPackage.FileNameTest, execute the following command
 ```bash
-   java -jar test4poo.jar package.subPackage.FileNameTest
+   java -jar junit-platform-console-standalone-1.9.1.jar --class-path classes --select-class package.subPackage.FileNameTest
 ```
 for example executing the test corresponding to Tournoi :
 ```bash
-   java -jar test4poo.jar competition.event.TournoiTest
+   java -jar junit-platform-console-standalone-1.9.1.jar --class-path classes --select-class competition.event.TournoiTest
 ```
 
 4. A graphic interface will pop up. A green line means that all the tests have been passed correctly, a red line means that there are some tests that failed.
+
+5. To Execute all the tests at once, execute the following command
+```bash 
+   java -jar junit-platform-console-standalone-1.9.1.jar --class-path classes --select-package competition
+```
 
 
 
