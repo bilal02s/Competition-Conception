@@ -3,6 +3,7 @@ package competition.event;
 import java.util.*;
 import competition.*;
 import competition.exception.*;
+import competition.displayer.*;
 
 /**
  * Championnat representing a league.
@@ -15,8 +16,8 @@ public class Championnat extends Competition {
         @param players List of participants
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
-    public Championnat(List<Competitor> players) throws InsufficientNumberOfPlayersException {
-        super(players);
+    public Championnat(List<Competitor> players, Displayer displayer) throws InsufficientNumberOfPlayersException {
+        super(players, displayer);
     }
 
     /**

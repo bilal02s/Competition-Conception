@@ -4,7 +4,7 @@ exec.jar : src/competition/Main.java
 	jar cvfe exec.jar competition.Main -C classes competition -C classes util
 
 
-src : util competition exception match event #main
+src : util competition exception match event displayer #main
 
 competition : src/competition/*.java 
 	javac -sourcepath src -d classes src/competition/*.java 
@@ -17,6 +17,9 @@ match : src/competition/match/*.java
 
 event : src/competition/event/*.java 
 	javac -sourcepath src -d classes src/competition/event/*.java 
+
+displayer : src/competition/displayer/*.java
+	javac -sourcepath src -d classes src/competition/displayer/*.java
 
 util : src/util/*.java
 	javac -sourcepath src -d classes src/util/*.java

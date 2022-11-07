@@ -4,6 +4,7 @@ import java.util.*;
 import java.lang.Math;
 import competition.*;
 import competition.exception.*;
+import competition.displayer.*;
 
 /**
  * Tournoi representing a tournament.
@@ -17,8 +18,8 @@ public class Tournoi extends Competition {
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
         @throws WrongNumberOfPlayersException if the number of players is not a power of 2.
      */
-    public Tournoi (List<Competitor> players) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
-        super(players);
+    public Tournoi (List<Competitor> players, Displayer displayer) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
+        super(players, displayer);
 
         if (! Tournoi.isPowerOf2(players.size())) {
             throw new WrongNumberOfPlayersException("the number of players in this competition is not a power of 2");

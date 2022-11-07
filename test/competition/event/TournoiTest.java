@@ -18,7 +18,7 @@ public class TournoiTest extends CompetitionTest {
         this test should raise the WrongNumberOfPlayersException.
      */
     @Test (expected = WrongNumberOfPlayersException.class)
-    public void test3ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
+    public void testTournoiConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
         players.add(new Competitor("tutu"));

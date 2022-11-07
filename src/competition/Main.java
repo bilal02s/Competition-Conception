@@ -4,6 +4,7 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.displayer.*;
 
 /**
  * The main program that launchs a competition with its participants.
@@ -33,7 +34,7 @@ public class Main{
         Competition competition;
         try {
             //getting the correct type of match using the factory design pattern.
-            competition = factory.getCompetition(args[0], players);
+            competition = factory.getCompetition(args[0], players, new PrintConsole());
         }
         catch(Exception e){
             System.out.println("Please enter the required number of players in the competition and try again");

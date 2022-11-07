@@ -4,6 +4,7 @@ import java.util.*;
 import util.*;
 import competition.*;
 import competition.exception.*;
+import competition.displayer.*;
 import competition.match.*;
 
 /**
@@ -12,17 +13,20 @@ import competition.match.*;
 public abstract class Competition {
     /** List of competitors */
     protected final List<Competitor> competitors; 
-    /** result as integer mapped to each competitor */
+    /** Result as integer mapped to each competitor */
     protected Map<Competitor, Integer> results;
+    /** A displayer to display match's results */
+    protected Displayer displayer;
 
     /**
         initialise the attribut competitors with the players given parameter.
         initialise the hashmap results by putting inside of it all the players given in parameter, and assigning a value of zero to their corresponding scores.
         raises an exception if the number of players in the list is less than 2.
+        affects the displayer variable to the displayer given in parameter.
         @param competitors List of participants.
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
-    public Competition(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
+    public Competition(List<Competitor> competitors, Displayer displayer) throws InsufficientNumberOfPlayersException{
         if(competitors.size() < 2){
             throw new InsufficientNumberOfPlayersException("A competition must have at least two players.");
         }
@@ -33,6 +37,8 @@ public abstract class Competition {
         for (Competitor c : competitors){
             results.put(c, 0);
         }
+
+        this.displayer = displayer;
     }
 
     /**
@@ -80,7 +86,7 @@ public abstract class Competition {
         this.results.put(winner, oldScore + 1);
 
         //print to the console
-        System.out.println(c1 + " vs " + c2 + " --> " + winner + " wins!");
+        this.displayer.writeMessage(c1 + " vs " + c2 + " --> " + winner + " wins!");
 
         return winner;
     }
