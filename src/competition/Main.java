@@ -49,11 +49,7 @@ public class Main{
         //launching all the matchs
         competition.play();
 
-        //retrieve the rankings
-        Map<Competitor, Integer> ranks = competition.ranking();
-
-        for (Competitor c : ranks.keySet()){
-            System.out.println(c + " - " + ranks.get(c));
-        }
+        //display the rankings
+        competition.displayRanking();
     }
 }

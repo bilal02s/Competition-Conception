@@ -8,11 +8,13 @@ import competition.match.*;
 import java.util.*;
 
 public class Master extends Competition{
+    private List<Championnat> leagues;
+    private Tounoi finalTournament;
     private Scanner scanner;
 
     /**
         @param competitors List of participants
-        @param displayer Writing results to the displayer
+        @param displayer Interacting with external source through the displayer (write or read information)
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 4.
      */
     public Master(List<Competitor> competitors, Displayer displayer) throws InsufficientNumberOfPlayersException{

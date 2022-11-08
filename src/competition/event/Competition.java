@@ -17,6 +17,8 @@ public abstract class Competition {
     protected Map<Competitor, Integer> results;
     /** A displayer to display match's results */
     protected Displayer displayer;
+    /** A match instance giving us the result of a match between two competitor */
+    protected Match match;
 
     /**
         initialise the attribut competitors with the players given parameter.
@@ -24,10 +26,9 @@ public abstract class Competition {
         raises an exception if the number of players in the list is less than 2.
         affects the displayer variable to the displayer given in parameter.
         @param competitors List of participants.
-        @param displayer Writing results to the displayer
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
-    public Competition(List<Competitor> competitors, Displayer displayer) throws InsufficientNumberOfPlayersException{
+    public Competition(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
         if(competitors.size() < 2){
             throw new InsufficientNumberOfPlayersException("A competition must have at least two players.");
         }
@@ -39,7 +40,8 @@ public abstract class Competition {
             results.put(c, 0);
         }
 
-        this.displayer = displayer;
+        this.displayer = new PrintConsole();
+        this.match = new RandomWinner();
     }
 
     /**
@@ -56,6 +58,38 @@ public abstract class Competition {
      */
     public int getNbPlayers() {
         return this.competitors.size();
+    }
+
+    /**
+        Sets this competition's match type 
+        @param match A match type instance 
+     */
+    public void setMatch(Match match){
+        this.match = match;
+    }
+
+    /**
+        returns this competition's match type instance.
+        @return this competition's match
+     */
+    public Match getMatch(){
+        return this.match;
+    }
+
+    /**
+        Sets this competition's displayer type 
+        @param match A displayer type instance 
+     */
+    public void setDisplayer(Displayer displayer){
+        this.displayer = displayer; 
+    }
+
+    /**
+        returns this competition's displayer type instance.
+        @return this competition's displayer
+     */
+    public Displayer getDisplayer(){
+        return this.displayer;
     }
 
     /**
@@ -98,5 +132,16 @@ public abstract class Competition {
      */
     public Map<Competitor, Integer> ranking() {
         return MapUtil.sortByDescendingValue(this.results);
+    }
+
+    /**
+        displays through the displayer instance, the ranking of the players in this competition.
+     */
+    public void displayRanking(){
+        Map<Competitor, Integer> ranks = this.ranking();
+
+        for (Competitor c : ranks.keySet()){
+            this.displayer.writeMessage(c + " - " + ranks.get(c));
+        }
     }
 }
