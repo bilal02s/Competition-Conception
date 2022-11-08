@@ -14,6 +14,7 @@ public class Championnat extends Competition {
         in the construction of the class, the number of players given in parameter must be two or more.
         otherwise an exception is raised.
         @param players List of participants
+        @param displayer Writing results to the displayer
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
     public Championnat(List<Competitor> players, Displayer displayer) throws InsufficientNumberOfPlayersException {

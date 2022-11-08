@@ -24,6 +24,7 @@ public abstract class Competition {
         raises an exception if the number of players in the list is less than 2.
         affects the displayer variable to the displayer given in parameter.
         @param competitors List of participants.
+        @param displayer Writing results to the displayer
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
     public Competition(List<Competitor> competitors, Displayer displayer) throws InsufficientNumberOfPlayersException{
