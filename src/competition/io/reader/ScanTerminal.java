@@ -1,6 +1,7 @@
 package competition.io.reader;
 
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import competition.io.reader.Reader;
 
 /**
@@ -42,7 +43,7 @@ public class ScanTerminal implements Reader{
 
         while(!integerFound){
             try{    
-                int value = this.scanner.nextInt();
+                value = this.scanner.nextInt();
                 integerFound = true;
             }
             catch(InputMismatchException e){

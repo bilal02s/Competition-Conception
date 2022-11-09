@@ -3,6 +3,7 @@ package competition.event;
 import competition.*;
 import competition.event.*;
 import competition.io.displayer.*;
+import competition.io.reader.*;
 import competition.exception.*;
 import competition.match.*;
 import java.util.*;
@@ -14,7 +15,7 @@ import java.util.*;
  */
 public class Master extends Competition{
     private List<Championnat> leagues;
-    private Tounoi finalTournament;
+    private Tournoi finalTournament;
     private int nbPools;
     private int nbFinalRound;
     private Reader reader;
@@ -44,22 +45,22 @@ public class Master extends Competition{
         int nbFinalRound;
 
         this.displayer.writeMessage("How many pools do you want to have?");
-        nbPools = this.reader.nextInt();
+        nbPools = this.reader.getInputInteger();
 
         while(nbPlayers % nbPools != 0){
             this.displayer.writeMessage("The number of pools must be a divisor of the total number of competitors.");
             this.displayer.writeMessage("Please chose again a valid number of pools.");
-            nbPools = this.reader.nextInt();
+            nbPools = this.reader.getInputInteger();
         }
 
         this.displayer.writeMessage("The number of players going to the final round must be a power of 2.");
         this.displayer.writeMessage("How many players goes to the final round?");
-        nbFinalRound = this.reader.nextInt();
+        nbFinalRound = this.reader.getInputInteger();
 
-        while(!Tournament.isPowerOf2(nbFinalRound)){
+        while(!Tournoi.isPowerOf2(nbFinalRound)){
             this.displayer.writeMessage("The number you have entered is not a power of 2.");
             this.displayer.writeMessage("how many players goes to the final round?");
-            nbFinalRound = this.reader.nextInt();
+            nbFinalRound = this.reader.getInputInteger();
         }
 
         this.nbPools = nbPools;
@@ -67,7 +68,7 @@ public class Master extends Competition{
     }
 
     private void initLeagues(){
-        assert this.nbPools;
+        assert this.nbPools > 0;
         
         int nbPlayersEachPool = (int) this.competitors.size()/nbPools;
         int indexCompetitors = 0;
@@ -102,4 +103,6 @@ public class Master extends Competition{
     public Reader getReader(){
         return this.reader;
     }
+
+    protected void play(List<Competitor> players){}
 }
