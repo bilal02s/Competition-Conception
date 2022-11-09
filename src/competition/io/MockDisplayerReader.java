@@ -38,10 +38,10 @@ public class MockDisplayerReader implements Displayer, Reader{
         @return a predetermined int used for testing purposes
      */
     public int nextInt(){
-        if("How many pool do you want to have?".equals(this.lastReceivedMessage)){
+        if("How many pools do you want to have?".equals(this.lastReceivedMessage)){
             return 4;
         }
-        else if("how many players gets to the final round?".equals(this.lastReceivedMessage)){
+        else if("How many players goes to the final round?".equals(this.lastReceivedMessage)){
             return 4;
         }
 

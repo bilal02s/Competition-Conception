@@ -36,7 +36,22 @@ public class ScanTerminal implements Reader{
         return the next token scanned from the scanner as an integer
         @return the next integer
      */
-    public int getInputInteger(){
-        return this.scanner.nextInt();
+    public int getInputInteger() {
+        int value = -1;
+        boolean integerFound = false;
+
+        while(!integerFound){
+            try{    
+                int value = this.scanner.nextInt();
+                integerFound = true;
+            }
+            catch(InputMismatchException e){
+                this.scanner.nextLine();
+                System.out.println("Please enter an integer");
+            }
+        }
+        
+        
+        return value;
     }
 }
