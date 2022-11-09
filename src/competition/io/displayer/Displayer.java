@@ -1,4 +1,4 @@
-package competition.displayer;
+package competition.io.displayer;
 
 /**
     Displayer Interface.

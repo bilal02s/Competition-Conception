@@ -4,7 +4,7 @@ import java.util.*;
 import java.lang.Math;
 import competition.*;
 import competition.exception.*;
-import competition.displayer.*;
+import competition.io.displayer.*;
 
 /**
  * Tournoi representing a tournament.

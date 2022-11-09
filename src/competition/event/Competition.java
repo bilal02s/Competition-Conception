@@ -4,7 +4,7 @@ import java.util.*;
 import util.*;
 import competition.*;
 import competition.exception.*;
-import competition.displayer.*;
+import competition.io.displayer.*;
 import competition.match.*;
 
 /**
@@ -114,8 +114,7 @@ public abstract class Competition {
         @return the winner between the two competitors
      */
     protected Competitor playMatch(Competitor c1, Competitor c2) {
-        Match match = new RandomWinner();
-        Competitor winner = match.playMatch(c1, c2);
+        Competitor winner = this.match.playMatch(c1, c2);
 
         int oldScore = this.results.get(winner);
         this.results.put(winner, oldScore + 1);

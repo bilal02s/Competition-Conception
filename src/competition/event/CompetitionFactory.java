@@ -4,7 +4,7 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
-import competition.displayer.*;
+import competition.io.displayer.*;
 
 /**
  * factory design pattern, takes care of constructing competitions.

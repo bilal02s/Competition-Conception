@@ -3,7 +3,7 @@ package competition.event;
 import java.util.*;
 import competition.*;
 import competition.exception.*;
-import competition.displayer.*;
+import competition.io.displayer.*;
 
 /**
  * Championnat representing a league.

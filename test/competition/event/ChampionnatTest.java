@@ -13,6 +13,11 @@ public class ChampionnatTest extends CompetitionTest {
         return new Championnat(joueurs);
     }
 
+    /**
+        Test play method using by asserting on the sum of victories, 
+        since no matter the variability of the winners the sum of total victories of all players will be the same.
+        the formula is written in the below code.
+     */
     @Test
     public void testPlay() {
         //in this type of competition, if we consider that we have n players, then we will have n*(n-1) matches because each player plays with all other players twice.
@@ -30,10 +35,28 @@ public class ChampionnatTest extends CompetitionTest {
         assertTrue(sommeVictoire == n*(n-1));
     }
 
-    /*@Test 
-    public void testPlayMatch() {
+    /**
+        testing play method through the ranking in the case of a mock match, a match where the first competitor is always the winner against the second.
+        by forcing the value of the winner, we can predict who will win the competition and thus test and correct functioning of the method.
+     */
+    @Test 
+    public void mockTestPlay() {
+        //we set the match type to the mockMatch instance so that we force the winner to be the first competitor in a given match
+        this.comp.setMatch(new MockMatch());
+        this.comp.play();
 
-    }*/
+        Competitor firstPlayer = this.joueurs.get(0);
+
+        //we expect all the final rankings and scores to be the same.
+        //since every player will play with every other player, and the winner is the first player, then every player will win against every other player.
+        //hence all player's score must be equal to the first player's score.
+        Map<Competitor, Integer> ranking = this.comp.ranking();
+        int firstPlayerScore = ranking.get(firstPlayer);
+
+        for (int i : ranking.values()){
+            assertEquals(firstPlayerScore, i);
+        }
+    }
 
     public static junit.framework.Test suite() {
       return new junit.framework.JUnit4TestAdapter(competition.event.ChampionnatTest.class);

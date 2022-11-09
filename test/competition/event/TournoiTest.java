@@ -26,6 +26,11 @@ public class TournoiTest extends CompetitionTest {
         this.comp = this.createComp(players);
     }
 
+    /**
+        Test play method using by asserting on the sum of victories, 
+        since no matter the variability of the winners the sum of total victories of all players will be the same.
+        the formula is written in the below code.
+     */
     @Test
     public void testPlay() {
         //in this type of competition, if we consider that we have n players, then we will have (n-1) matches because each payer plays with all other players twice.
@@ -41,6 +46,35 @@ public class TournoiTest extends CompetitionTest {
         }
 
         assertTrue(sommeVictoire == (n-1));
+    }
+
+    /**
+        testing play method through the ranking in the case of a mock match, a match where the first competitor is always the winner against the second.
+        by forcing the value of the winner, we can predict who will win the competition and thus test and correct functioning of the method.
+     */
+    @Test 
+    public void mockTestPlay() {
+        //we set the match type to the mockMatch instance so that we force the winner to be the first competitor in a given match
+        this.comp.setMatch(new MockMatch());
+        this.comp.play();
+
+        Competitor firstPlayer = this.joueurs.get(0);
+        Competitor secondPlayer = this.joueurs.get(1);
+        Competitor thirdPlayer = this.joueurs.get(2);
+        Competitor fourthPlayer = this.joueurs.get(3);
+
+        //since matchs are paired first two players against each other, and then the winners to the next round are also paired with the first two players againt each other and so on.
+        //we expect the winner of the competition to be the first player
+        Map<Competitor, Integer> ranking = this.comp.ranking();
+        int firstPlayerScore = ranking.get(firstPlayer);
+        int secondPlayerScore = ranking.get(secondPlayer);
+        int thirdPlayerScore = ranking.get(thirdPlayer);
+        int fourthPlayerScore = ranking.get(fourthPlayer);
+
+        assertTrue(firstPlayerScore > thirdPlayerScore);
+        assertTrue(thirdPlayerScore > secondPlayerScore);
+        assertTrue(thirdPlayerScore > fourthPlayerScore);
+        assertTrue(secondPlayerScore == fourthPlayerScore);
     }
 
     /**

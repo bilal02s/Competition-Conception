@@ -1,7 +1,10 @@
-package competition.displayer;
+package competition.io.displayer;
 
-import competition.displayer.Displayer;
+import competition.io.displayer.Displayer;
 
+/**
+    Used to write messages to the standard output.
+ */
 public class PrintConsole implements Displayer{
 
     /**

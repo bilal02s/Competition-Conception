@@ -6,6 +6,7 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.match.*;
 
 public abstract class CompetitionTest {
     protected Competition comp;
@@ -51,12 +52,53 @@ public abstract class CompetitionTest {
         the constructor assign to each player a score of zero at the beginning since no matchs have been played.
         Constructor test2
      */
-    @Test public void test2Constructor() {
+    @Test 
+    public void test2Constructor() {
         //we need to verify that all match scores are assigned to zero at the beginning.
         Map<Competitor, Integer> ranking = this.comp.ranking();
         for (int i : ranking.values()){
             assertTrue(i == 0);
         }
+    }
+
+    /**
+        the constructor assign to the attribut match by default an instance of RandomWinner.
+     */
+    @Test 
+    public void testMatchDefaultValue(){
+        assertTrue(this.comp.getMatch() instanceof RandomWinner);
+    }
+
+    /**
+        the constructor assign to the attribut displayer by default an instance of PrintConsole.
+     */
+    @Test 
+    public void testMatchDefaultValue(){
+        assertTrue(this.comp.getDisplayer() instanceof PrintConsole);
+    }
+
+    /**
+        tests if the method setMatch, sets a new match instance, and if getMatch returns the new setted instance.
+     */
+    @Test 
+    public void testGetSetMatch(){
+        Match match = new RandomWinner();
+        assertFalse(match == this.comp.getMatch());
+
+        this.comp.setMatch(match);
+        assertTrue(match == this.comp.getMatch());
+    }
+
+    /**
+        tests if the method setDisplayer, sets a new match instance, and if getDisplayer returns the new setted instance.
+     */
+    @Test 
+    public void testGetSetDisplayer(){
+        Displayer displayer = new PrintConsole();
+        assertFalse(displayer == this.comp.getDisplayer());
+
+        this.comp.setDisplayer(displayer);
+        assertTrue(displayer == this.comp.getDisplayer());
     }
 
     /**
