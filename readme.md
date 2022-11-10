@@ -60,9 +60,11 @@ modeling different types of matchs. For this version, we are only interested in 
 
 ## Conception
 
+### Version 1
+
 ![UML](./UML/competition-sportive.png)
 
-   1. * As shown in the UML diagram, we model the          competition concept using an abstract class competition. This common mother class implements the common attributs and methods that will be later used in each competition type.  </br>
+   1. * As shown in the UML diagram, we model the competition concept using an abstract class competition. This common mother class implements the common attributs and methods that will be later used in each competition type.  </br>
       * Common attributs such as list of players, a map assigning each player a score to be retrieved at the end of the competition.  </br>
       * Common methods such as getPlayers, play: its job is to execute the matchs and assign the final scores. </br>
       ranking : get the rankings of the players.
@@ -83,6 +85,26 @@ modeling different types of matchs. For this version, we are only interested in 
    5. * Matchs are modeled using the interface Match, all match must have a method playMatch receiving two competitors and returning either one of them as a winner.
       * RandomWinner is a class implementing the interface Match. its playMatch chooses the winner randomly and independently of the competitors.
 
+### Version 2
+Whats new ?
+   1. * Adding a new class extending competition abstraction, Its the new Master competition.
+      * The master is a composition between leagues and tournament, having the original competitors grouped into pools each pool will forgo a league to determine the best players inside each pool, the winners will face each other in a tournament to determine the final winner of the master.
+      * The master class requires for its execution a number of information indispensable for its execution, such as the number of pools and the number of players going to the final round. These information are asked from the user through an input interface explained in more details below.
+   2. * Adding a new displayer and reader interface, implementing a way to interact with the external environment, displaying useful information and getting user input information. Thus achieving independance between the competitions and the IO objects.
+      * PrintConsole, as the name suggests, is a class implementing the displayer interface, printing the message to the standard output.
+      * ScanTerminal, as the name suggests, is a class implementing the reader interface, scanning the standard input for any user input necessary for the execution of the program.
+      * This implementation offers several advantages, mainly the application of:
+         * <span style="color:blue">**Open Closed Principle**</span> : 
+            having interfaces for input and output allows adding any extensions to the project in order to further upgrade the performance by displaying to a monitor without having a negative impact on the already functionning methods.
+         * <span style="color:blue">**Single Responsability Principle**</span> :
+            The competitions responsability is unified, managing the competition only, and being separated from the task of managing the interaction with the external environment. Instead this responsability is being taken care of using the new interfaces.
+         * <span style="color:blue">**Dependency Inversion Principle**</span> :
+            Now the competitions are independent of class objects managing the interaction with the external environment (not dependent on the use of System.out.println or scanner object). Instead it is made dependent of general use interfaces allowing any class inheriting these interfaces to manage the task of interacting with the external environment.
+   3. * Mock testing has been added to further test the correct functionning of play method in competitions, the mock match force the return value of the winner between two competitor instead of making it random, thus predicting the progress of the competition.
+      * MockDisplayerReader imitates the case of a user's input.
+      In some cases such as the master class initialisation phase, the input of user information is indispensable. Thus making creating a difficulty in the testing phase which will be confronted with the task of providing these information to object. Hence the use of the mock is relevant, it is capable of providing some predetermined value to the object the predict the progress of the program further improving the test quality.
+   4. * Adding a new exception extending runtime exception.
+      * While the core implementation of the master class is a composition of leagues and tournament, these two classes throws exception on the initialisation phase, meant to alert the client on the usability of these two objects. Since now they are being used by another object and not a client, their corresponding prerequisites will be dealt with by this object and thus any exception that may occur is out of reach of the client, and he can not recover from it, thus the creation of a new runtime exception decision is found important.
 
 ## How TO
 
