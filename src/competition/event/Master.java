@@ -18,6 +18,8 @@ public class Master extends Competition{
     private Tournoi finalTournament;
     private int nbPools;
     private int nbFinalRound;
+    private int firstNplayers;
+    private int bestNplayers;
     private Reader reader;
 
     /**
@@ -39,6 +41,9 @@ public class Master extends Competition{
         this.getGroupsInformation();
     }
 
+    /**
+        Retrieves information about the distribution of pools from the external environment using the reader instance.
+     */
     private void getGroupsInformation(){
         int nbPlayers = this.competitors.size();
         int nbPools;
@@ -65,12 +70,44 @@ public class Master extends Competition{
 
         this.nbPools = nbPools;
         this.nbFinalRound = nbFinalRound;
+
+        this.choseNfirstNbestPlayers();
     }
 
+    /**
+        calculate the firstNplayers and bestNplayers following a certain logic explained in the code in  more details.
+     */
+    private void choseNfirstNbestPlayers(){
+        assert this.nbPools > 0;
+        assert this.nbFinalRound > 0;
+
+        /*
+            since we want to pick the winners from each pool to the final round in an equal way,
+            we will pick all the first players from each pool to the final round, if we need more players, we will add all the second players from each pool and so on,
+            we call it the first n players (designating the first players or the first two players or first three players...),
+            if we need more players to the final round but it is less than the number of pool we face a problem.
+            thus we will be picking the best n players to complete the missing number for the final round (best third players from the pools for example).
+            following the logic the best n players is less than the number of pools and is equal to the rest of the division of nbfinalround and nbpools.
+            hence, the firstNplayers designate that we will be picking the first n players from each pool for the final round
+            and the bestNplayers designate the number of missing players to the final round.
+            
+        */
+        this.firstNplayers = (int) (this.nbFinalRound/this.nbPools);
+        this.bestNplayers = (int) (this.nbFinalRound % this.nbPools);
+    }
+
+    /**
+        Verifies that the attributs nbPools is initialised to a correct value.
+        iterate over the number of pools all while creating the list of corresponding players and instantiating league competitions.
+        and then add the instance to the list of leagues.
+        if the instantiation of a league fails for any reason, an exception is thrown.
+        @throws CanNotCreateCompetitionException if the instantiation of a league fails
+     */
     private void initLeagues(){
         assert this.nbPools > 0;
+        assert this.competitors.size() % this.nbPools == 0;
         
-        int nbPlayersEachPool = (int) this.competitors.size()/nbPools;
+        int nbPlayersEachPool = (int) (this.competitors.size()/this.nbPools);
         int indexCompetitors = 0;
 
         //iterating over the number of pools
@@ -83,9 +120,68 @@ public class Master extends Competition{
                 indexCompetitors++;
             }
 
-            //Championnat league = new Championnat(leaguePlayers);
-            //this.leagues.add(league);
+            Championnat league;
+            try{//in case any exception occurs in the instantiation of the league, it is to be thrown as a runtime exception.
+                league = new Championnat(leaguePlayers);
+            }
+            catch(InsufficientNumberOfPlayersException e){
+                throw new CanNotCreateCompetitionException(e.getMessage());
+            }
+
+            this.leagues.add(league);
         }
+    }
+
+    /**
+        Displays through the displayer all the organized pools, and the competitor's names inside of each pool.
+     */
+    private void displayPools(){
+        assert this.nbPools > 0;
+
+        int poolCounter = 1;
+
+        this.displayer.writeMessage("All competitors are separated into " + this.nbPools + " pools.");
+        
+        for(Championnat league : this.leagues){
+            this.displayer.writeMessage("Pools " + poolCounter + " contains:");
+            
+            for (Competitor competitor : league.getPlayers()){
+                this.displayer.writeMessage(competitor.getName());
+            }
+            this.displayer.writeMessage("");
+        }
+        this.displayer.writeMessage("");
+    }
+
+    /**
+        This method will play all the already initialised leagues one by one, all by displaying the league being played and the corresponding result.
+     */
+    private void playLeagues(){
+        int leagueCounter = 1;
+
+        for(Championnat league : this.leagues){
+            this.displayer.writeMessage("League number " + leagueCounter + " will be starting");
+            league.play();
+            league.displayRanking();
+            this.displayer.writeMessage("");
+        }
+        this.displayer.writeMessage("");
+    }
+
+    private List<Competitor> pickFirstNPlayers(Championnat league, int firstNplayers){
+
+    }
+
+    private void choseFinalRoundCompetitors(){
+
+    }
+
+    public void play(){
+        this.initLeagues();
+        this.displayPools();
+        this.playLeagues();
+        this.choseFinalRoundCompetitors();
+        this.play()
     }
 
     /**
