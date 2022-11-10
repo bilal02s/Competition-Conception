@@ -7,6 +7,7 @@ import competition.*;
 import competition.event.*;
 import competition.exception.*;
 import competition.match.*;
+import competition.io.displayer.*;
 
 public abstract class CompetitionTest {
     protected Competition comp;
@@ -28,7 +29,6 @@ public abstract class CompetitionTest {
         catch(Exception e){
             fail();
         }
-        
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class CompetitionTest {
         the constructor assign to the attribut displayer by default an instance of PrintConsole.
      */
     @Test 
-    public void testMatchDefaultValue(){
+    public void testDisplayerDefaultValue(){
         assertTrue(this.comp.getDisplayer() instanceof PrintConsole);
     }
 
@@ -166,6 +166,9 @@ public abstract class CompetitionTest {
     */
     @Test
     public void testRanking() {
+        //prevent printing to console
+        this.comp.setDisplayer(new DummyDisplayer());
+        
         //firstly we need to call method play, in order to generate the results.
         this.comp.play();
         Map<Competitor, Integer> ranking = this.comp.ranking();

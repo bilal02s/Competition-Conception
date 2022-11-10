@@ -21,7 +21,7 @@ public class MockDisplayerReader implements Displayer, Reader{
         Force value to true, there is always a token to be given.
         @return true
      */
-    public boolean hastNext(){
+    public boolean hasNext(){
         return true;
     }
 
@@ -29,7 +29,7 @@ public class MockDisplayerReader implements Displayer, Reader{
         Force value to an empty string, we have no use of this method
         @return an empty string
      */
-    public String next(){
+    public String getInputString(){
         return "";
     }
 
@@ -37,7 +37,7 @@ public class MockDisplayerReader implements Displayer, Reader{
         Force the integer to be returned to some predetermined value depending on the last received message.
         @return a predetermined int used for testing purposes
      */
-    public int nextInt(){
+    public int getInputInteger(){
         if("How many pools do you want to have?".equals(this.lastReceivedMessage)){
             return 4;
         }

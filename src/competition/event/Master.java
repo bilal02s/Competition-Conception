@@ -83,8 +83,8 @@ public class Master extends Competition{
                 indexCompetitors++;
             }
 
-            Championnat league = new Championnat(leaguePlayers);
-            this.leagues.add(league);
+            //Championnat league = new Championnat(leaguePlayers);
+            //this.leagues.add(league);
         }
     }
 

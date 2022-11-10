@@ -6,6 +6,8 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.io.displayer.*;
+import competition.match.MockMatch;
 
 public class TournoiTest extends CompetitionTest {
 
@@ -33,6 +35,9 @@ public class TournoiTest extends CompetitionTest {
      */
     @Test
     public void testPlay() {
+        //prevent printing to console
+        this.comp.setDisplayer(new DummyDisplayer());
+
         //in this type of competition, if we consider that we have n players, then we will have (n-1) matches because each payer plays with all other players twice.
         //in each match played there is always one winner, thus we must have at the end (n-1) wins.
         //thus the sum of all wins must be equal to (n-1)
@@ -54,6 +59,9 @@ public class TournoiTest extends CompetitionTest {
      */
     @Test 
     public void mockTestPlay() {
+        //prevent printing to console 
+        this.comp.setDisplayer(new DummyDisplayer());
+
         //we set the match type to the mockMatch instance so that we force the winner to be the first competitor in a given match
         this.comp.setMatch(new MockMatch());
         this.comp.play();

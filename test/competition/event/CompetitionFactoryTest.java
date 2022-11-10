@@ -97,6 +97,22 @@ public class CompetitionFactoryTest{
      }
 
      /**
+        test if the method getCompetition will return a master instance when given the correct string.
+        ignoring case letters.
+     
+     @Test 
+     public void masterInstanceTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
+        Competition competition = this.factory.getCompetition("master", this.players);
+        assertTrue(competition instanceof Master);
+
+        competition = this.factory.getCompetition("MaStEr", this.players);
+        assertTrue(competition instanceof Master);
+
+        competition = this.factory.getCompetition("MASTER", this.players);
+        assertTrue(competition instanceof Master);
+     }*/
+
+     /**
         test if the method getCompetition will give the competition type instance the correct list of players given in parameter.
      */
      @Test 
