@@ -42,7 +42,6 @@ public class Master extends Competition{
         this.factory = new CompetitionFactory();
         this.leagues = new ArrayList<Championnat>();
         this.reader = new ScanTerminal();
-        this.getGroupsInformation();
     }
 
     /**
@@ -157,30 +156,41 @@ public class Master extends Competition{
         this.displayer.writeMessage("All competitors are separated into " + this.leagues.size() + " pools.");
         
         for(Championnat league : this.leagues){
-            this.displayer.writeMessage("Pool " + poolCounter + " contains:");
+            String line = "Pool " + poolCounter + " contains:";
+            poolCounter++;
             
             for (Competitor competitor : league.getPlayers()){
-                this.displayer.writeMessage(competitor.getName());
+                line += competitor.getName() + " ";
             }
-            this.displayer.writeMessage("");
+            this.displayer.writeMessage(line);
         }
         this.displayer.writeMessage("");
     }
 
     /**
         This method will play all the already initialised leagues one by one, all by displaying the league being played and the corresponding result.
+        and then copy the results of the league into the master's results.
      */
     private void playLeagues(){
         int leagueCounter = 1;
 
         for(Championnat league : this.leagues){
             this.displayer.writeMessage("League number " + leagueCounter + " will be starting");
+            leagueCounter++;
             league.play();
             league.displayRanking();
+            this.copyResults(league);
             this.displayer.writeMessage("");
         }
     }
 
+    /**
+        Given a league and the n-th rank, determines the first n-th players who had highest scores
+        in the given league, returns the result as a list of competitors.
+        @param league the league we wish to determine the winners from
+        @param firstNplayers the n-th rank we wish to conserve
+        @return the list of competitors of the league belonging from the first to the n-th rank
+     */
     private List<Competitor> pickFirstNPlayers(Championnat league, int firstNplayers){
         assert league.getNbPlayers() > firstNplayers;
 
@@ -199,6 +209,14 @@ public class Master extends Competition{
         return firstPlayers;
     }
 
+    /**
+        Picks a number of competitors belonging to the firstNplayer + 1 rank from each league.
+        the number of competitors to pick from is equal to bestNplayers.
+        (for example we want to pick the best 2 players of the third rank, the method will 
+        pick the competitors of the third rank from each pool and then filter out the best 2 of them 
+        depending on their scores in their corresponding league)
+        @return the list of competitors who are the best from a specific rank
+     */
     private List<Competitor> pickBestNPlayers(){
         List<Competitor> bestNplayers = new ArrayList<Competitor>();
         Map<Competitor, Integer> toPickFrom = new HashMap<Competitor, Integer>();
@@ -259,6 +277,20 @@ public class Master extends Competition{
     }
 
     /**
+        Iterate over the results of the given competition, and copies it to this master's results.
+        @param competition the competition from which it will copy the results
+     */
+    private void copyResults(Competition competition){
+        Map<Competitor, Integer> ranking = competition.ranking();
+
+        for(Competitor competitor : ranking.keySet()){
+            int oldScore = this.results.get(competitor);
+            this.results.put(competitor, oldScore + ranking.get(competitor));
+        }
+    }
+
+
+    /**
         Instanciate the tournament instance, displays important information, then plays the tournament.
         @param finalCompetitors the competitors playing the final tournament in the master.
         @throws CanNotCreateCompetitionException if the instantiation of the tournament fails
@@ -279,12 +311,19 @@ public class Master extends Competition{
         this.displayer.writeMessage("");
     }
 
+    /**
+        Executes all the necessary steps to setup the different competitions inside the master,
+        organize the players, the leagues, play the leagues, display results and compute the winners
+        of each phase, running the final tournament to determine the ultimate winner of the master.
+     */
     public void play(){
+        this.getGroupsInformation();
         this.initLeagues();
         this.displayPools();
         this.playLeagues();
         List<Competitor> finalCompetitors = this.choseFinalRoundCompetitors();
         this.play(finalCompetitors);
+        this.copyResults(this.finalTournament);
     }
 
     /**
@@ -339,7 +378,7 @@ public class Master extends Competition{
         Returns the attribut firstNplayers
         @return firstNplayers
      */
-    public getFirstNPlayers(){
+    public int getFirstNPlayers(){
         return this.firstNplayers;
     }
 
@@ -347,11 +386,7 @@ public class Master extends Competition{
         Returns the attribut bestNplayers
         @return bestNplayers
      */
-    public getbestNPlayers(){
+    public int getbestNPlayers(){
         return this.bestNplayers;
-    }
-
-    public void displayRanking() {
-        
     }
 }
