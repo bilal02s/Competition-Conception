@@ -22,9 +22,6 @@ public class ChampionnatTest extends CompetitionTest {
      */
     @Test
     public void testPlay() {
-        //prevent printing to console
-        this.comp.setDisplayer(new DummyDisplayer());
-
         //in this type of competition, if we consider that we have n players, then we will have n*(n-1) matches because each player plays with all other players twice.
         //in each match played there is always one winner, thus we have n*(n-1) wins.
         //thus the sum of all wins must be equal to n*(n-1)
@@ -46,9 +43,6 @@ public class ChampionnatTest extends CompetitionTest {
      */
     @Test 
     public void mockTestPlay() {
-        //prevent printing to console
-        this.comp.setDisplayer(new DummyDisplayer());
-
         //we set the match type to the mockMatch instance so that we force the winner to be the first competitor in a given match
         this.comp.setMatch(new MockMatch());
         this.comp.play();
