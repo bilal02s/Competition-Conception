@@ -7,6 +7,7 @@ import competition.io.reader.*;
 import competition.exception.*;
 import competition.match.*;
 import java.util.*;
+import util.*;
 
 /**
     Master Competition, groups the competitors into a number of pools given by the user.
@@ -14,6 +15,7 @@ import java.util.*;
     the best players are then confronted together in the final phase in a tournament to determine the winner of the Master.
  */
 public class Master extends Competition{
+    private CompetitionFactory factory;
     private List<Championnat> leagues;
     private Tournoi finalTournament;
     private int nbPools;
@@ -37,6 +39,8 @@ public class Master extends Competition{
             throw new InsufficientNumberOfPlayersException("A master must have at least 4 players.");
         }
 
+        this.factory = new CompetitionFactory();
+        this.leagues = new ArrayList<Championnat>();
         this.reader = new ScanTerminal();
         this.getGroupsInformation();
     }
@@ -52,17 +56,17 @@ public class Master extends Competition{
         this.displayer.writeMessage("How many pools do you want to have?");
         nbPools = this.reader.getInputInteger();
 
-        while(nbPlayers % nbPools != 0){
+        while(nbPools <= 0 || nbPlayers % nbPools != 0){
             this.displayer.writeMessage("The number of pools must be a divisor of the total number of competitors.");
             this.displayer.writeMessage("Please chose again a valid number of pools.");
             nbPools = this.reader.getInputInteger();
         }
 
-        this.displayer.writeMessage("The number of players going to the final round must be a power of 2.");
+        this.displayer.writeMessage("The number of players going to the final round must be less than the total number of players and must be a power of 2.");
         this.displayer.writeMessage("How many players goes to the final round?");
         nbFinalRound = this.reader.getInputInteger();
 
-        while(!Tournoi.isPowerOf2(nbFinalRound)){
+        while(nbFinalRound <= 0 || !Tournoi.isPowerOf2(nbFinalRound) || nbFinalRound >= nbPlayers){
             this.displayer.writeMessage("The number you have entered is not a power of 2.");
             this.displayer.writeMessage("how many players goes to the final round?");
             nbFinalRound = this.reader.getInputInteger();
@@ -71,16 +75,35 @@ public class Master extends Competition{
         this.nbPools = nbPools;
         this.nbFinalRound = nbFinalRound;
 
-        this.choseNfirstNbestPlayers();
+        this.choseNfirstNbestPlayers(this.nbPools, this.nbFinalRound);
+    }
+
+    /**
+        Creates a competition using a factory object.
+        initialise the competition created with the necessary setup before returning it.
+        @return competition type instance
+        @throws CanNotCreateCompetitionException if the instantiation of a competition fails
+     */
+    private Competition getCompetition(String name, List<Competitor> competitors){
+        Competition competition;
+        
+        try{//in case any exception occurs in the instantiation of the league, it is to be thrown as a runtime exception.
+            competition = this.factory.getCompetition(name, competitors);
+        }
+        catch(Exception e){
+            throw new CanNotCreateCompetitionException(e.getMessage());
+        }
+
+        competition.setDisplayer(this.getDisplayer());
+        competition.setMatch(this.getMatch());
+
+        return competition;
     }
 
     /**
         calculate the firstNplayers and bestNplayers following a certain logic explained in the code in  more details.
      */
-    private void choseNfirstNbestPlayers(){
-        assert this.nbPools > 0;
-        assert this.nbFinalRound > 0;
-
+    private void choseNfirstNbestPlayers(int nbPools, int nbFinalRound){
         /*
             since we want to pick the winners from each pool to the final round in an equal way,
             we will pick all the first players from each pool to the final round, if we need more players, we will add all the second players from each pool and so on,
@@ -92,8 +115,8 @@ public class Master extends Competition{
             and the bestNplayers designate the number of missing players to the final round.
             
         */
-        this.firstNplayers = (int) (this.nbFinalRound/this.nbPools);
-        this.bestNplayers = (int) (this.nbFinalRound % this.nbPools);
+        this.firstNplayers = (int) (nbFinalRound/nbPools);
+        this.bestNplayers = (int) (nbFinalRound % nbPools);
     }
 
     /**
@@ -120,14 +143,7 @@ public class Master extends Competition{
                 indexCompetitors++;
             }
 
-            Championnat league;
-            try{//in case any exception occurs in the instantiation of the league, it is to be thrown as a runtime exception.
-                league = new Championnat(leaguePlayers);
-            }
-            catch(InsufficientNumberOfPlayersException e){
-                throw new CanNotCreateCompetitionException(e.getMessage());
-            }
-
+            Championnat league = (Championnat) this.getCompetition("league", leaguePlayers);
             this.leagues.add(league);
         }
     }
@@ -136,14 +152,12 @@ public class Master extends Competition{
         Displays through the displayer all the organized pools, and the competitor's names inside of each pool.
      */
     private void displayPools(){
-        assert this.nbPools > 0;
-
         int poolCounter = 1;
 
-        this.displayer.writeMessage("All competitors are separated into " + this.nbPools + " pools.");
+        this.displayer.writeMessage("All competitors are separated into " + this.leagues.size() + " pools.");
         
         for(Championnat league : this.leagues){
-            this.displayer.writeMessage("Pools " + poolCounter + " contains:");
+            this.displayer.writeMessage("Pool " + poolCounter + " contains:");
             
             for (Competitor competitor : league.getPlayers()){
                 this.displayer.writeMessage(competitor.getName());
@@ -165,25 +179,112 @@ public class Master extends Competition{
             league.displayRanking();
             this.displayer.writeMessage("");
         }
-        this.displayer.writeMessage("");
     }
 
-    private Competitor[] pickFirstNPlayers(Championnat league, int firstNplayers){
-        Competitor[] firstPlayers = new Competitor[firstNplayers];
-        
+    private List<Competitor> pickFirstNPlayers(Championnat league, int firstNplayers){
+        assert league.getNbPlayers() > firstNplayers;
+
+        int counter = 0;
+        List<Competitor> firstPlayers = new ArrayList<Competitor>();
+        Map<Competitor, Integer> ranking = league.ranking();
+
+        for (Competitor competitor : ranking.keySet()){
+            if (counter >= firstNplayers){
+                break;
+            }
+            firstPlayers.add(competitor);
+            counter ++;
+        }        
+
         return firstPlayers;
     }
 
-    private void choseFinalRoundCompetitors(){
+    private List<Competitor> pickBestNPlayers(){
+        List<Competitor> bestNplayers = new ArrayList<Competitor>();
+        Map<Competitor, Integer> toPickFrom = new HashMap<Competitor, Integer>();
 
+        //if we do not need any best n players, then return an empty list
+        if (this.bestNplayers == 0){
+            return bestNplayers;
+        }
+
+        //iterate over all leagues
+        for (Championnat league : this.leagues){
+            int counter = 0;
+            Map<Competitor, Integer> ranking = league.ranking();
+
+            //iterate over all players sorted by scores in each league
+            for (Competitor competitor : ranking.keySet()){
+                //pick the player in the n-th rank
+                if(counter == firstNplayers){
+                    toPickFrom.put(competitor, ranking.get(competitor));
+                    break;
+                }
+                counter++;
+            }
+        }
+
+        //sort the players in the n-th rank
+        toPickFrom = MapUtil.sortByDescendingValue(toPickFrom);
+
+        int counter = 0;
+        //iterate over players in the n-th rank to chose only the number that we want.
+        for (Competitor competitor : toPickFrom.keySet()){
+            if (counter >= this.bestNplayers){
+                break;
+            }
+            bestNplayers.add(competitor);
+            counter++;
+        }
+
+        return bestNplayers;
+    }
+
+    /**
+        After playing all the leagues, this method choose the winners from each league that will play 
+        in the final phase of the master.
+        @return the list of competitors playing the final phase.
+     */
+    private List<Competitor> choseFinalRoundCompetitors(){
+        List<Competitor> finalCompetitors = new ArrayList<Competitor>();
+
+        for (Championnat league : this.leagues){
+            finalCompetitors.addAll(this.pickFirstNPlayers(league, this.firstNplayers));
+        }
+
+        finalCompetitors.addAll(this.pickBestNPlayers());
+        assert finalCompetitors.size() == this.nbFinalRound;
+
+        return finalCompetitors;
+    }
+
+    /**
+        Instanciate the tournament instance, displays important information, then plays the tournament.
+        @param finalCompetitors the competitors playing the final tournament in the master.
+        @throws CanNotCreateCompetitionException if the instantiation of the tournament fails
+     */
+    protected void play(List<Competitor> finalCompetitors){
+        this.finalTournament = (Tournoi) this.getCompetition("tournament", finalCompetitors);
+
+        //display some information about the final tournament
+        this.displayer.writeMessage("We proceed to the final round.");
+        this.displayer.writeMessage("The competitors facing each other in the last tournament are :");
+        for (Competitor competitor : finalCompetitors){
+           this.displayer.writeMessage(competitor.getName());
+        }
+        this.displayer.writeMessage("");
+
+        this.finalTournament.play();
+        this.finalTournament.displayRanking();
+        this.displayer.writeMessage("");
     }
 
     public void play(){
         this.initLeagues();
         this.displayPools();
         this.playLeagues();
-        this.choseFinalRoundCompetitors();
-        //this.play()
+        List<Competitor> finalCompetitors = this.choseFinalRoundCompetitors();
+        this.play(finalCompetitors);
     }
 
     /**
@@ -202,5 +303,55 @@ public class Master extends Competition{
         return this.reader;
     }
 
-    protected void play(List<Competitor> players){}
+    /**
+        Returns the list of leagues attribut
+        @return this list of leagues
+     */
+    public List<Championnat> getLeagues(){
+        return this.leagues;
+    }
+
+    /**
+        Returns the final tournament
+        @return the final tournament
+     */
+    public Tournoi getFinalTournament(){
+        return this.finalTournament;
+    }
+
+    /**
+        Returns the attribut nbPools
+        @return nbPools
+     */
+    public int getNbPools(){
+        return this.nbPools;
+    }
+
+    /**
+        Returns the attribut nbFinalRound
+        @return nbFinalRound
+     */
+    public int getNbFinalRound(){
+        return this.nbFinalRound;
+    }
+
+    /**
+        Returns the attribut firstNplayers
+        @return firstNplayers
+     */
+    public getFirstNPlayers(){
+        return this.firstNplayers;
+    }
+
+    /**
+        Returns the attribut bestNplayers
+        @return bestNplayers
+     */
+    public getbestNPlayers(){
+        return this.bestNplayers;
+    }
+
+    public void displayRanking() {
+        
+    }
 }
