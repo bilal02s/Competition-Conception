@@ -1,7 +1,7 @@
-package competition.match;
+package competition.match.mock;
 
-import competition.match.Match;
-import competition.Competitor;
+import competition.match.*;
+import competition.*;
 
 /**
     MockMatch, to be used when testing the winner of a competition in order to force the return value of playMatch. T

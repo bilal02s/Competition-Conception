@@ -1,4 +1,4 @@
-package competition.io;
+package competition.io.mock;
 
 import competition.io.reader.*;
 import competition.io.displayer.*;

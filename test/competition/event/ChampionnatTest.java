@@ -7,7 +7,7 @@ import competition.*;
 import competition.event.*;
 import competition.exception.*;
 import competition.io.displayer.*;
-import competition.match.MockMatch;
+import competition.match.mock.MockMatch;
 
 public class ChampionnatTest extends CompetitionTest {
 

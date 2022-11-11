@@ -4,7 +4,7 @@ exec.jar : src/competition/Main.java
 	jar cvfe exec.jar competition.Main -C classes competition -C classes util
 
 
-src : util competition exception match event io displayer reader #main
+src : util competition exception match event displayer reader #main
 
 competition : src/competition/*.java 
 	javac -sourcepath src -d classes src/competition/*.java 
@@ -33,7 +33,15 @@ util : src/util/*.java
 #main : src/Main.java 
 #	javac -sourcepath src -d classes src/Main.java
 
-test : testCompetition testEvent testMatch
+test : mock testCompetition testEvent testMatch 
+
+mock : mockMatch mockIO
+
+mockMatch : test/competition/match/mock/*.java
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/match/mock/*.java
+
+mockIO : test/competition/io/mock/*.java 
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/io/mock/*.java
 
 testCompetition : test/competition/*.java 
 	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/*.java

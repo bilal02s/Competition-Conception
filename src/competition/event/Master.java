@@ -168,8 +168,10 @@ public class Master extends Competition{
         this.displayer.writeMessage("");
     }
 
-    private List<Competitor> pickFirstNPlayers(Championnat league, int firstNplayers){
-
+    private Competitor[] pickFirstNPlayers(Championnat league, int firstNplayers){
+        Competitor[] firstPlayers = new Competitor[firstNplayers];
+        
+        return firstPlayers;
     }
 
     private void choseFinalRoundCompetitors(){
@@ -181,7 +183,7 @@ public class Master extends Competition{
         this.displayPools();
         this.playLeagues();
         this.choseFinalRoundCompetitors();
-        this.play()
+        //this.play()
     }
 
     /**
