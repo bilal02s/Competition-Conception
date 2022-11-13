@@ -18,14 +18,24 @@ l3s5-projet-coo/
 │       │   ├── Championnat.java
 │       │   ├── Competition.java
 │       │   ├── Tournoi.java
+│       │   ├── Master.java
 │       │   └── CompetitionFactory.java
 │       ├── exception/
+│       │   ├── CanNotCreateCompetitionException.java
 │       │   ├── InsufficientNumberOfPlayersException.java
 │       │   ├── IntegerNotPowerOf2Exception.java
 │       │   └── WrongNumberOfPlayersException.java
 │       ├── match/
 │       │   ├── Match.java
 │       │   └── RandomWinner.java
+│       ├── io/
+│       │   ├── displayer/
+│       │   │   ├── Displayer.java
+│       │   │   ├── DummyDisplayer.java
+│       │   │   └── PrintConsole.java
+│       │   ├── reader/
+│       │   │   ├── Reader.java
+│       │   └── └── ScanTerminal.java
 │       │
 │       ├── Competitor.java
 │       └── Main.java
@@ -37,16 +47,26 @@ l3s5-projet-coo/
 │       │  ├── ChampionnatTest.java
 │       │  ├── CompetitionTest.java
 │       │  ├── TournoiTest.java
+│       │  ├── MasterTest.java
 │       |  └── CompetitionFactoryTest.java
+│       ├── io/
+│       │  ├── mock/
+│       │  │   ├── MockDisplayerReader.java
+│       │  └── └── MockDisplayerReaderException.java
 │       ├── match/
+│       │  ├── mock/
+│       │  │   └── MockMatch.java
+│       │  │   
 │       │  └──RandomWinnerTest.java
 │       │
 │       └── CompetitorTest.java
 │
 │
+├── .gitignore
 ├── exec.jar
-│   MakeFile
+├── MakeFile
 ├── manifest.
+├── junit-platform-console-standalone-1.9.1.jar
 ├── test4poo.jar
 └── readme.md
 ```
