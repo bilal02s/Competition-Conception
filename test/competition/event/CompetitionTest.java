@@ -169,9 +169,6 @@ public abstract class CompetitionTest {
     @Test 
     public abstract void testPlay();
 
-    //@Test
-    //public abstract void testPlayMatch();
-
     /**
         testing if the method ranking returns a hashmap having each players his corresponding result, in descending order.
     */
