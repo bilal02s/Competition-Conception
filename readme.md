@@ -86,6 +86,9 @@ modeling different types of matchs. For this version, we are only interested in 
       * RandomWinner is a class implementing the interface Match. its playMatch chooses the winner randomly and independently of the competitors.
 
 ### Version 2
+
+![UML](./UML/sport-competition-v2.png)
+
 Whats new ?
    1. * Adding a new class extending competition abstraction, Its the new Master competition.
       * The master is a composition between leagues and tournament, having the original competitors grouped into pools each pool will forgo a league to determine the best players inside each pool, the winners will face each other in a tournament to determine the final winner of the master.
