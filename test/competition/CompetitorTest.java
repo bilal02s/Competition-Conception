@@ -46,6 +46,16 @@ public class CompetitorTest{
     }
 
     /**
+        test if the method equals returns false when given another object.
+     */
+    @Test
+    public void notEqualsTest(){
+        Competitor player = new Competitor("competitor");
+
+        assertFalse(player.equals(new Object()));
+    }
+
+    /**
         test if the method toString returns the correct string version representing a player, which is its name.
      */
     @Test public void toStringTest(){

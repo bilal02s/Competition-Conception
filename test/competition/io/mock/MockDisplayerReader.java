@@ -1,13 +1,33 @@
 package competition.io.mock;
 
+import java.util.*;
 import competition.io.reader.*;
 import competition.io.displayer.*;
+import competition.io.mock.MockDisplayerReaderException;
 
 /**
     this Mock is used to test the competitions in which some user inputs are required
  */
 public class MockDisplayerReader implements Displayer, Reader{
+    private Map<String, String> answers; //the first string correspond to a question, the second correspond to an answer.
     private String lastReceivedMessage;
+
+    /**
+        Initialise a hasmap to be used to save input answers to questions that might be asked later.
+     */
+    public MockDisplayerReader(){
+        this.answers = new HashMap<String, String>();
+    }
+
+    private String getAnswer(String question){
+        for (String str : this.answers.keySet()){
+            if (str.equals(question)){
+                return this.answers.get(str);
+            }
+        }
+
+        return null;
+    }
 
     /**
         stock the printed message to a variable to be used later when asked for an input.
@@ -26,25 +46,47 @@ public class MockDisplayerReader implements Displayer, Reader{
     }
 
     /**
-        Force value to an empty string, we have no use of this method
-        @return an empty string
+        returns the string answer saved in the hashmap (answers) corresponding to the question present 
+        in the last received message
+        @return the answer to the last received message
+        @throws MockDisplayerReaderException if there was no answer set to the last received message
      */
     public String getInputString(){
-        return "";
+        String answer = this.getAnswer(this.lastReceivedMessage);
+
+        if (answer == null){
+            throw new MockDisplayerReaderException("answer not found");
+        }
+
+        return answer;
     }
 
     /**
-        Force the integer to be returned to some predetermined value depending on the last received message.
-        @return a predetermined int used for testing purposes
+        returns the integer answer saved in the hashmap (answers) corresponding to the question present
+        in the last received message.
+        @return the integer answer to the last received message
+        @throws MockDisplayerReaderException if there was no answer set that is an integer to the last received message
      */
     public int getInputInteger(){
-        if("How many pools do you want to have?".equals(this.lastReceivedMessage)){
-            return 4;
+        int answer;
+        try{
+            answer = Integer.parseInt(this.getAnswer(this.lastReceivedMessage));
         }
-        else if("How many players goes to the final round?".equals(this.lastReceivedMessage)){
-            return 4;
+        catch(Exception e){
+            throw new MockDisplayerReaderException("Answer is not an integer, or answer not found");
         }
 
-        return -1;
+        return answer;
+    }
+
+    /**
+        Puts inside the hashmap a combination of question and answer, 
+        so that when asked a question through the call to writeMessage, 
+        the question in saved in the attribut lastReceivedMessage, and then we use it
+        to retrieve the desired answer from the hashmap when asked an input by the call to
+        getInputInteger or getInputString, simulating a user answering a question.
+     */
+    public void putAnswer(String question, String answer){
+        this.answers.put(question, answer);
     }
 }
