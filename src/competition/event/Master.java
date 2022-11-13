@@ -35,7 +35,7 @@ public class Master extends Competition{
     public Master(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
         super(competitors);
 
-        if(competitors.size() < 4){
+        if(competitors.size() < 3){
             throw new InsufficientNumberOfPlayersException("A master must have at least 4 players.");
         }
 
@@ -55,7 +55,7 @@ public class Master extends Competition{
         this.displayer.writeMessage("How many pools do you want to have?");
         nbPools = this.reader.getInputInteger();
 
-        while(nbPools <= 0 || nbPlayers % nbPools != 0){
+        while(nbPools <= 0 || nbPools == nbPlayers || nbPlayers % nbPools != 0){
             this.displayer.writeMessage("The number of pools must be a divisor of the total number of competitors.");
             this.displayer.writeMessage("Please chose again a valid number of pools.");
             nbPools = this.reader.getInputInteger();
@@ -65,9 +65,9 @@ public class Master extends Competition{
         this.displayer.writeMessage("How many players goes to the final round?");
         nbFinalRound = this.reader.getInputInteger();
 
-        while(nbFinalRound <= 0 || !Tournoi.isPowerOf2(nbFinalRound) || nbFinalRound >= nbPlayers){
+        while(nbFinalRound <= 1 || !Tournoi.isPowerOf2(nbFinalRound) || nbFinalRound >= nbPlayers){
             this.displayer.writeMessage("The number you have entered is not a power of 2.");
-            this.displayer.writeMessage("how many players goes to the final round?");
+            this.displayer.writeMessage("Please chose again how many players goes to the final round?");
             nbFinalRound = this.reader.getInputInteger();
         }
 
@@ -156,13 +156,14 @@ public class Master extends Competition{
         this.displayer.writeMessage("All competitors are separated into " + this.leagues.size() + " pools.");
         
         for(Championnat league : this.leagues){
-            String line = "Pool " + poolCounter + " contains:";
+            StringBuilder str = new StringBuilder("Pool " + poolCounter + " contains: ");
             poolCounter++;
             
             for (Competitor competitor : league.getPlayers()){
-                line += competitor.getName() + " ";
+                str.append(competitor.getName());
+                str.append(" ");
             }
-            this.displayer.writeMessage(line);
+            this.displayer.writeMessage(str.toString());
         }
         this.displayer.writeMessage("");
     }

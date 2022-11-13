@@ -1,3 +1,7 @@
 classes/
 *.class
 docs/
+out/
+.idea/
+l3s5-projet-coo.iml
+.vs/
