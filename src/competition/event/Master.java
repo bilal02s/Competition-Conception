@@ -29,7 +29,6 @@ public class Master extends Competition{
         Calls the private method initGroups.
         Throws an error if the number of given competitors is less than 4.
         @param competitors List of participants
-        @param displayer Interacting with external source through the displayer (write or read information)
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 4.
      */
     public Master(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
