@@ -78,7 +78,7 @@ public abstract class Competition {
 
     /**
         Sets this competition's displayer type 
-        @param match A displayer type instance 
+        @param displayer A displayer type instance 
      */
     public void setDisplayer(Displayer displayer){
         this.displayer = displayer; 

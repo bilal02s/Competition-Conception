@@ -67,17 +67,16 @@ public class Tournoi extends Competition {
             rounds = Tournoi.getPowerOf2(players.size());
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            this.displayer.writeMessage(e.getMessage());
             return;
         }
 
         //we create a list which contains the players that will play against each other in the first round, aka all players.
-        List<Competitor> currentRoundPlayers = players;
+        List<Competitor> currentRoundPlayers = new ArrayList<Competitor>(players);
+        //we create a list in which we will add the winners from the first round, so that they will play in the next round
+        List<Competitor> nextRoundPlayers = new ArrayList<Competitor>(); 
 
         for (int round = 1; round <= rounds; round++){
-            //we create a list in which we will add the winners from the first round, so that they will play in the next round
-            List<Competitor> nextRoundPlayers = new ArrayList<Competitor>(); 
-
             Iterator itr = currentRoundPlayers.iterator();
             while(itr.hasNext()){
                 //since there is "a power of 2" number of players, if there is at least one player, then there is for sure another one to play against
@@ -89,9 +88,10 @@ public class Tournoi extends Competition {
             }
 
             //next round players will become the current players for the next round.
-            currentRoundPlayers = nextRoundPlayers;
+            currentRoundPlayers.clear();
+            currentRoundPlayers.addAll(nextRoundPlayers);
             //next round players will become an empty list, to be filled in the next round.
-            nextRoundPlayers = new ArrayList<Competitor>();
+            nextRoundPlayers.clear();
         }
     }
 }

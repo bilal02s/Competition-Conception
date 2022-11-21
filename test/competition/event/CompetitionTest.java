@@ -29,6 +29,9 @@ public abstract class CompetitionTest {
         catch(Exception e){
             fail();
         }
+
+        //prevent printing to console
+        this.comp.setDisplayer(new DummyDisplayer());
     }
 
     /**
@@ -73,8 +76,15 @@ public abstract class CompetitionTest {
         the constructor assign to the attribut displayer by default an instance of PrintConsole.
      */
     @Test 
-    public void testDisplayerDefaultValue(){
-        assertTrue(this.comp.getDisplayer() instanceof PrintConsole);
+    public void testDisplayerDefaultValue() throws Exception{
+        List<Competitor> joueurs = new ArrayList<Competitor>();
+        joueurs.add(new Competitor("toto"));
+        joueurs.add(new Competitor("tata"));
+        joueurs.add(new Competitor("tutu"));
+        joueurs.add(new Competitor("tati"));
+        Competition competition = this.createComp(joueurs);
+
+        assertTrue(competition.getDisplayer() instanceof PrintConsole);
     }
 
     /**
@@ -95,6 +105,7 @@ public abstract class CompetitionTest {
     @Test 
     public void testGetSetDisplayer(){
         Displayer displayer = new PrintConsole();
+        assertTrue(this.comp != null);
         assertFalse(displayer == this.comp.getDisplayer());
 
         this.comp.setDisplayer(displayer);
@@ -158,17 +169,11 @@ public abstract class CompetitionTest {
     @Test 
     public abstract void testPlay();
 
-    //@Test
-    //public abstract void testPlayMatch();
-
     /**
         testing if the method ranking returns a hashmap having each players his corresponding result, in descending order.
     */
     @Test
     public void testRanking() {
-        //prevent printing to console
-        this.comp.setDisplayer(new DummyDisplayer());
-        
         //firstly we need to call method play, in order to generate the results.
         this.comp.play();
         Map<Competitor, Integer> ranking = this.comp.ranking();
