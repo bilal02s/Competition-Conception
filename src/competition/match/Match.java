@@ -1,6 +1,7 @@
 package competition.match;
 
 import competition.*;
+import competition.journalist.report.*;
 
 /**
  * Match interface.
@@ -14,6 +15,6 @@ public interface Match{
         @param c2 The second competitor.
         @return The winner out of the two competitors.
      */
-    public Competitor playMatch(Competitor c1, Competitor c2);
+    public Report playMatch(Competitor c1, Competitor c2);
     //public Comp
 }

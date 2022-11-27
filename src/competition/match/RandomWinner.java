@@ -3,6 +3,7 @@ package competition.match;
 import java.util.*;
 import competition.*;
 import competition.match.*;
+import competition.journalist.report.*;
 
 /**
  * Creates a match where the outcome is random.
@@ -11,16 +12,27 @@ public class RandomWinner implements Match{
 
     /**
         plays a match between the two competitors given in parameter.
-        return one competitor of the two, the returned one is the winner.
+        return a report containing the state of the match and the corresponding score for each competitor.
         The winner is selected randomly.
         @param c1 The first competitor.
         @param c2 The second competitor.
-        @return The winner out of the two competitors.
+        @return A report of the match
      */
-    public Competitor playMatch(Competitor c1, Competitor c2){
+    public Report playMatch(Competitor c1, Competitor c2){
         Random rand =  new Random();
-        int choice = rand.nextInt(2);
+        Report report;
+        int score1 = rand.nextInt(11);
+        int score2 = rand.nextInt(11);
 
-        return (choice == 1) ? c2 : c1;
+        State state = (score1 == score2 ? State.DRAW : State.VICTORY);
+
+        if (score1 >= score2){
+            report = new StandardReport(c1, score1, c2, score2, state);
+        }
+        else{
+            report = new StandardReport(c2, score2, c1, score1, state);
+        }
+
+        return report;
     }
 }

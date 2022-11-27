@@ -4,7 +4,7 @@ import competition.Competitor;
 import competition.io.displayer.*;
 
 public abstract class Journalist{
-    private name;
+    private String name;
     private Displayer displayer;
 
     /**

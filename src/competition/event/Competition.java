@@ -5,6 +5,7 @@ import util.*;
 import competition.*;
 import competition.exception.*;
 import competition.io.displayer.*;
+import competition.journalist.report.*;
 import competition.match.*;
 
 /**
