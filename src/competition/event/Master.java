@@ -96,6 +96,10 @@ public class Master extends Competition{
         competition.setDisplayer(this.getDisplayer());
         competition.setMatch(this.getMatch());
 
+        for(Journalist journalist : this.getJournalists()){
+            competition.addJournalist(journalist);
+        }
+
         return competition;
     }
 

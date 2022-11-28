@@ -98,6 +98,22 @@ public abstract class Competition {
     }
 
     /**
+        Receives a journalist in parameter, add it to the list of journalists.
+        @param journalist the journalist to be added
+     */
+    public void addJournalist(Journalist journalist){
+        this.journalists.add(journalist);
+    }
+
+    /**
+        Receives a journalist in parameter, remove it to the list of journalists.
+        @param journalist the journalist to be removed
+     */
+    public void removeJournalist(Journalist journalist){
+        this.journalists.remove(journalist);
+    }
+
+    /**
         returns the list of journalists assisting to this competition
         @return the list of journalists
      */

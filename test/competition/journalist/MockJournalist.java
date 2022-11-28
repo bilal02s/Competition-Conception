@@ -1,6 +1,7 @@
 package competition.journalist;
 
 import competition.journalist.*;
+import competition.journalist.report.*;
 
 /**
     mock journalist, used to test if the call to the method printReport happened or not.

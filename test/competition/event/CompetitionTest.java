@@ -92,6 +92,17 @@ public abstract class CompetitionTest {
     }
 
     /**
+        test if the constructor assigne an emtpy list to the attribut journalists 
+        during the construction of a competition.
+     */
+    @Test
+    public void testJournalistsDefaultValue(){
+        List<Journalist> allJournalists = this.comp.getJournalists();
+
+        assertSame(0, allJournalists.size());
+    }
+
+    /**
         tests if the method setMatch, sets a new match instance, and if getMatch returns the new setted instance.
      */
     @Test 
@@ -170,10 +181,73 @@ public abstract class CompetitionTest {
         assertTrue(initialNumberOfPlayers == numberOfPlayersInCompetition);
     }
 
-    /*@Test 
-    public void testDiffuseResult(){
+    /**
+        tests if the method addJournalist adds a journalist to the list of journalists
+     */
+    @Test
+    public void testAddJournalist(){
+        Journalist j1 = new ReportResultsJournalist("foo");
+        Journalist j2 = new ReportResultsJournalist("boo");
 
-    }*/
+        this.comp.addJournalist(j1);
+        this.comp.addJournalist(j2);
+
+        List<Journalist> allJournalists = this.comp.getJournalists();
+        assertTrue(allJournalists.contains(j1));
+        assertTrue(allJournalists.contains(j2));
+    }
+
+    /**
+        tests if the method removeJournalist removes a journalist from the list of journalists
+        if it already exists
+     */
+    @Test
+    public void testRemoveJournalist(){
+        Journalist j1 = new ReportResultsJournalist("foo");
+        Journalist j2 = new ReportResultsJournalist("boo");
+
+        this.comp.addJournalist(j1);
+        this.comp.addJournalist(j2);
+
+        //verify that the journalist exists
+        List<Journalist> allJournalists = this.comp.getJournalists();
+        assertTrue(allJournalists.contains(j1));
+        assertTrue(allJournalists.contains(j2));
+
+        //remove the journalist j1
+        this.comp.removeJournalist(j1);
+
+        //assert that the journalist j1 is removed while j2 always exists
+        allJournalists = this.comp.getJournalists();
+        assertFalse(allJournalists.contains(j1));
+        assertTrue(allJournalists.contains(j2));
+    }
+
+    /**
+        test if the report of each match is diffused to all the journalists
+        the method diffuseResult must be called a number of times equivilent to the number of match played
+        the number of matchs played is the sum of rankings (since every match will increase the ranking by 1, be it a draw or victory)
+     */
+    @Test 
+    public void testDiffuseResult(){
+        this.comp.addJournalist(new MockJournalist("mock"));
+        this.comp.addJournalist(new MockJournalist("mock"));
+        this.comp.play();
+
+        //determine the number of matchs played
+        int nbMatchPlayed = 0;
+        Map<Competitor, Float> ranking = this.comp.ranking();
+
+        for(float i : ranking.values()){
+            nbMatchPlayed += i;
+        }
+
+        //test how many times the results have been diffused
+        for(Journalist journalist : this.comp.getJournalists()){
+            MockJournalist mockJournalist = (MockJournalist) journalist;
+            assertTrue(mockJournalist.getNbCall() >= nbMatchPlayed);
+        }
+    }
 
     @Test 
     public abstract void testPlay();
