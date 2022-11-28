@@ -5,6 +5,9 @@ import competition.match.State;
 import competition.*;
 import util.Pair;
 
+/**
+    A standard report hold standard information about a match, two pairs of competitor and score, and the match's state.
+ */
 public class StandardReport implements Report{
     private final Pair<Competitor, Integer> first;
     private final Pair<Competitor, Integer> second;
@@ -13,8 +16,8 @@ public class StandardReport implements Report{
     /**
         Constructs a report to save informatition about a match's result and the corresponding score for each competitor
         determine the winner of the two competitors by comparing their scores.
-        @param first the first competitor
-        @param second the second competitor
+        @param c1 the first competitor
+        @param c2 the second competitor
         @param score1 the first competitor's score
         @param score2 the second competitor's score
         @param state the match's state

@@ -4,6 +4,9 @@ import competition.Competitor;
 import competition.io.displayer.*;
 import competition.journalist.report.*;
 
+/**
+    A journalist, diffusing article about match when assisting a competition.
+ */
 public abstract class Journalist{
     protected String name;
     protected Displayer displayer;

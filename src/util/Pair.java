@@ -1,5 +1,8 @@
 package util;
 
+/**
+    Pair data structure, representing a single (key, value) pair
+ */
 public class Pair<Key, Value>{
     private final Key key;
     private final Value value;
@@ -14,10 +17,18 @@ public class Pair<Key, Value>{
         this.value = value;
     }
 
+    /**
+        returns the key of this pair
+        @return the key of this pair
+     */
     public Key getKey(){
         return this.key;
     }
 
+    /**
+        returns the value associated of the key of this pair
+        @return the value of this pair
+     */
     public Value getValue(){
         return this.value;
     }
