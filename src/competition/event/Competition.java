@@ -135,37 +135,22 @@ public abstract class Competition {
         after receiving the winner, his score is incremented by one.
         in case of a draw, increment both player's scores by 0.5
         the winner is returned.
+        the report is diffused to all the journalists.
         @param c1 first competitor
         @param c2 second competitor
         @return the report of the match, containing the result, scores of each competitor.
      */
     protected Report playMatch(Competitor c1, Competitor c2) {
+        //play the match
         Report report = this.match.playMatch(c1, c2);
-        Competitor winner = report.getWinner();
-        Competitor loser = report.getLoser();
-
-        //update scores
-        float oldWinnerScore = this.results.get(winner);
-        float oldLoserScore = this.results.get(loser);
-        float newWinnerScore;
-        float newLoserScore;
 
         //message to display
         String msg = c1 + " vs " + c2 + " --> ";
+        //get the winner to announce his name later
+        Competitor winner = report.getWinner();
 
-        if (report.getMatchState() == State.VICTORY){//in the case of a victory, add one to the winner's score 
-            newWinnerScore = oldWinnerScore + 1;
-            newLoserScore = oldLoserScore;
-            msg += winner + " wins!";
-        }
-        else{//in case of a draw, increase both competitor's score by 0.5
-            newWinnerScore = oldWinnerScore + 0.5f;
-            newLoserScore = oldLoserScore + 0.5f;
-            msg += " Its a draw!";
-        }
-
-        this.results.put(winner, newWinnerScore);
-        this.results.put(loser, newLoserScore);
+        //announce the winner if there is, if not then announce that it was a draw
+        msg += (report.getMatchState() == State.DRAW ? "Its a draw!" : winner + " wins!");
 
         //print to the console
         this.displayer.writeMessage(msg);
@@ -174,6 +159,32 @@ public abstract class Competition {
         this.diffuseReport(report);
 
         return report;
+    }
+
+    /**
+        This method updates the rankings of the two competitors who are inside the report.
+        @param report a report of a match
+     */
+    protected void updateRanking(Report report){
+        Competitor winner = report.getWinner();
+        Competitor loser = report.getLoser();
+        //update scores
+        float oldWinnerScore = this.results.get(winner);
+        float oldLoserScore = this.results.get(loser);
+        float newWinnerScore;
+        float newLoserScore;
+
+        if (report.getMatchState() == State.VICTORY){//in the case of a victory, add one to the winner's score 
+            newWinnerScore = oldWinnerScore + 1;
+            newLoserScore = oldLoserScore;
+        }
+        else{//in case of a draw, increase both competitor's score by 0.5
+            newWinnerScore = oldWinnerScore + 0.5f;
+            newLoserScore = oldLoserScore + 0.5f;
+        }
+
+        this.results.put(winner, newWinnerScore);
+        this.results.put(loser, newLoserScore);
     }
 
     /**

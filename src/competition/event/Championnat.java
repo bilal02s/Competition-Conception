@@ -5,6 +5,7 @@ import competition.*;
 import competition.exception.*;
 import competition.io.displayer.*;
 import competition.journalist.*;
+import competition.journalist.report.*;
 
 /**
  * Championnat representing a league.
@@ -31,7 +32,8 @@ public class Championnat extends Competition {
         for (Competitor c1 : players){
             for(Competitor c2 : players){
                 if (! c1.equals(c2)){
-                    this.playMatch(c1, c2);
+                    Report report = this.playMatch(c1, c2);
+                    this.updateRanking(report);
                 }
             }
         }

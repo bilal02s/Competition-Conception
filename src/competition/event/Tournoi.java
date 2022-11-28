@@ -56,29 +56,6 @@ public class Tournoi extends Competition {
     }
 
     /**
-        Overloads Competition's playMatch method, after the execution of the original method,
-        if the result is a draw, then go to tie break in order to determine the winner.
-        @param c1 the first competitor
-        @param c2 the second competitor
-        @return the winner of the two competitors
-     */
-    protected Report playMatch(Competitor c1, Competitor c2){
-        Report report = super.playMatch(c1, c2);
-
-        if (report.getMatchState() == State.VICTORY){//if it is a victory, return the report.
-            return report;
-        }
-
-        //if it's a draw, launch a tie break!
-        do{
-            this.displayer.writeMessage("The last match was a tie, we will proceed to a tie breaker match!");
-            report = super.playMatch(c1, c2);
-        } while(report.getMatchState() == State.DRAW);
-
-        return report;
-    }
-
-    /**
         initialises the initial conditions of play : matchs distribution across players.
         plays the matchs between players.
         in this type of competition each player are paired two by two, and then winners will play against winners.
@@ -110,6 +87,14 @@ public class Tournoi extends Competition {
                 Competitor c1 = (Competitor) itr.next();
                 Competitor c2 = (Competitor) itr.next();
                 Report report = this.playMatch(c1, c2);
+
+                //if the match is a tie, go into tie breaker, keep playing until there is a victory.
+                while(report.getMatchState() == State.DRAW){
+                    this.displayer.writeMessage("The last match was a tie, we will proceed to a tie breaker match!");
+                    report = this.playMatch(c1, c2);
+                }
+
+                this.updateRanking(report);
                 Competitor winner = report.getWinner();
                 nextRoundPlayers.add(winner);
             }
