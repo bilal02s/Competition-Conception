@@ -13,7 +13,7 @@ public class RandomWinner implements Match{
     /**
         plays a match between the two competitors given in parameter.
         return a report containing the state of the match and the corresponding score for each competitor.
-        The winner is selected randomly.
+        The winner is according the highest score, scores are attributed randomly.
         @param c1 The first competitor.
         @param c2 The second competitor.
         @return A report of the match
@@ -26,13 +26,6 @@ public class RandomWinner implements Match{
 
         State state = (score1 == score2 ? State.DRAW : State.VICTORY);
 
-        if (score1 >= score2){
-            report = new StandardReport(c1, score1, c2, score2, state);
-        }
-        else{
-            report = new StandardReport(c2, score2, c1, score1, state);
-        }
-
-        return report;
+        return new StandardReport(c1, score1, c2, score2, state);
     }
 }

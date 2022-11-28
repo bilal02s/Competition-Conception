@@ -12,15 +12,24 @@ public class StandardReport implements Report{
 
     /**
         Constructs a report to save informatition about a match's result and the corresponding score for each competitor
+        determine the winner of the two competitors by comparing their scores.
         @param first the first competitor
         @param second the second competitor
         @param score1 the first competitor's score
         @param score2 the second competitor's score
         @param state the match's state
      */
-    public StandardReport(Competitor first, int score1, Competitor second, int score2, State state){
-        this.first = new Pair<Competitor, Integer>(first, score1);
-        this.second = new Pair<Competitor, Integer>(second, score2);
+    public StandardReport(Competitor c1, int score1, Competitor c2, int score2, State state){
+        //determine the competitor with the highest score and store in the "first" attribut
+        if(score1 >= score2){
+            this.first = new Pair<Competitor, Integer>(c1, score1);
+            this.second = new Pair<Competitor, Integer>(c2, score2);
+        }
+        else{
+            this.first = new Pair<Competitor, Integer>(c2, score2);
+            this.second = new Pair<Competitor, Integer>(c1, score1);
+        }
+        
         this.state = state;
     }
 
