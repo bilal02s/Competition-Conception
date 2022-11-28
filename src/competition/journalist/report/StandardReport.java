@@ -1,7 +1,9 @@
 package competition.journalist.report;
 
 import competition.journalist.report.*;
+import competition.match.State;
 import competition.*;
+import util.Pair;
 
 public class StandardReport implements Report{
     private final Pair<Competitor, Integer> first;
@@ -26,7 +28,7 @@ public class StandardReport implements Report{
         returns the state of the match
         @return the match's state
      */
-    public State getState(){
+    public State getMatchState(){
         return this.state;
     }
 
@@ -44,5 +46,21 @@ public class StandardReport implements Report{
      */
     public Pair<Competitor, Integer> getSecondCompetitorScore(){
         return this.second;
+    }
+
+    /**
+        returns the winner, in case of a draw the term winner does not matter.
+        @return the winner
+     */
+    public Competitor getWinner(){
+        return this.first.getKey();
+    }
+
+    /**
+        returns the loser, in case of a draw the term loser does not matter.
+        @return the loser
+     */
+    public Competitor getLoser(){
+        return this.second.getKey();
     }
 }
