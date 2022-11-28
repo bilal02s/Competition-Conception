@@ -32,8 +32,8 @@ public class Master extends Competition{
         @param competitors List of participants
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 4.
      */
-    public Master(List<Competitor> competitors, List<Journalist> journalists) throws InsufficientNumberOfPlayersException{
-        super(competitors, journalists);
+    public Master(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
+        super(competitors);
 
         if(competitors.size() < 3){
             throw new InsufficientNumberOfPlayersException("A master must have at least 4 players.");
@@ -87,7 +87,7 @@ public class Master extends Competition{
         Competition competition;
         
         try{//in case any exception occurs in the instantiation of the league, it is to be thrown as a runtime exception.
-            competition = this.factory.getCompetition(name, competitors, this.getJournalists());
+            competition = this.factory.getCompetition(name, competitors);
         }
         catch(Exception e){
             throw new CanNotCreateCompetitionException(e.getMessage());

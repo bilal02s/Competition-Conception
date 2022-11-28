@@ -15,7 +15,7 @@ public abstract class CompetitionTest {
     protected List<Competitor> joueurs;
     protected List<Journalist> journalists;
 
-    protected abstract Competition createComp(List<Competitor> joueurs, List<Journalist> journalists) throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException;
+    protected abstract Competition createComp(List<Competitor> joueurs) throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException;
 
     @Before 
     public void init() {
@@ -28,7 +28,7 @@ public abstract class CompetitionTest {
         this.journalists = new ArrayList<Journalist>();
 
         try{
-            this.comp = this.createComp(this.joueurs, this.journalists);
+            this.comp = this.createComp(this.joueurs);
         }
         catch(Exception e){
             fail();
@@ -86,7 +86,7 @@ public abstract class CompetitionTest {
         joueurs.add(new Competitor("tata"));
         joueurs.add(new Competitor("tutu"));
         joueurs.add(new Competitor("tati"));
-        Competition competition = this.createComp(joueurs, this.journalists);
+        Competition competition = this.createComp(joueurs);
 
         assertTrue(competition.getDisplayer() instanceof PrintConsole);
     }
@@ -123,7 +123,7 @@ public abstract class CompetitionTest {
     @Test (expected = InsufficientNumberOfPlayersException.class)
     public void test1ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
         List<Competitor> players = new ArrayList<Competitor>();
-        this.comp = this.createComp(players, this.journalists);
+        this.comp = this.createComp(players);
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class CompetitionTest {
     public void test2ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
-        this.comp = this.createComp(players, this.journalists);
+        this.comp = this.createComp(players);
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class CompetitionTest {
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
-        this.comp = this.createComp(players, this.journalists);
+        this.comp = this.createComp(players);
     }
 
     /**
@@ -170,11 +170,17 @@ public abstract class CompetitionTest {
         assertTrue(initialNumberOfPlayers == numberOfPlayersInCompetition);
     }
 
+    /*@Test 
+    public void testDiffuseResult(){
+
+    }*/
+
     @Test 
     public abstract void testPlay();
 
     /**
         testing if the method ranking returns a hashmap having each players his corresponding result, in descending order.
+        test if the ranks are updated after a competition have been played
     */
     @Test
     public void testRanking() {

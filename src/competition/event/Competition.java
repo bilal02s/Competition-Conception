@@ -32,13 +32,13 @@ public abstract class Competition {
         @param competitors List of participants.
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
-    public Competition(List<Competitor> competitors, List<Journalist> journalists) throws InsufficientNumberOfPlayersException{
+    public Competition(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
         if(competitors.size() < 2){
             throw new InsufficientNumberOfPlayersException("A competition must have at least two players.");
         }
 
         this.competitors = competitors;
-        this.journalists = journalists;
+        this.journalists = new ArrayList<Journalist>();
         this.results = new HashMap<Competitor, Float>();
 
         for (Competitor c : competitors){

@@ -38,7 +38,7 @@ public class Main{
         Competition competition;
         try {
             //getting the correct type of match using the factory design pattern.
-            competition = factory.getCompetition(args[0], players, journalists);
+            competition = factory.getCompetition(args[0], players);
         }
         catch(Exception e){
             System.out.println("Please enter the required number of players in the competition and try again");

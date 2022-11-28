@@ -12,8 +12,8 @@ import competition.match.mock.MockMatch;
 
 public class TournoiTest extends CompetitionTest {
 
-    protected Competition createComp(List<Competitor> joueurs, List<Journalist> journalists)throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
-        return new Tournoi(joueurs, journalists);
+    protected Competition createComp(List<Competitor> joueurs)throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
+        return new Tournoi(joueurs);
     }
 
     /**
@@ -26,7 +26,7 @@ public class TournoiTest extends CompetitionTest {
         players.add(new Competitor("toto"));
         players.add(new Competitor("tutu"));
         players.add(new Competitor("tata"));
-        this.comp = this.createComp(players, this.journalists);
+        this.comp = this.createComp(players);
     }
 
     /**

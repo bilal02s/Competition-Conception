@@ -21,8 +21,8 @@ public class Tournoi extends Competition {
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
         @throws WrongNumberOfPlayersException if the number of players is not a power of 2.
      */
-    public Tournoi (List<Competitor> players, List<Journalist> journalists) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
-        super(players, journalists);
+    public Tournoi (List<Competitor> players) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
+        super(players);
 
         if (! Tournoi.isPowerOf2(players.size())) {
             throw new WrongNumberOfPlayersException("the number of players in this competition is not a power of 2");

@@ -19,8 +19,8 @@ public class MasterTest extends CompetitionTest{
     private static String question1 = "How many pools do you want to have?";
     private static String question2 = "How many players goes to the final round?";
 
-    protected Competition createComp(List<Competitor> competitors, List<Journalist> journalists) throws InsufficientNumberOfPlayersException{
-        return new Master(competitors, journalists);
+    protected Competition createComp(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
+        return new Master(competitors);
     }
 
     private MockDisplayerReader initMock(){
@@ -52,7 +52,7 @@ public class MasterTest extends CompetitionTest{
         this.journalists = new ArrayList<Journalist>();
 
         try{
-            this.master = new Master(this.players, this.journalists);
+            this.master = new Master(this.players);
         }
         catch(Exception e){
             fail();
@@ -73,7 +73,7 @@ public class MasterTest extends CompetitionTest{
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
-        this.comp = this.createComp(players, this.journalists);
+        this.comp = this.createComp(players);
     }
 
     /**
@@ -86,7 +86,7 @@ public class MasterTest extends CompetitionTest{
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
         players.add(new Competitor("titi"));
-        this.comp = this.createComp(players, this.journalists);
+        this.comp = this.createComp(players);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MasterTest extends CompetitionTest{
         joueurs.add(new Competitor("tata"));
         joueurs.add(new Competitor("tutu"));
         joueurs.add(new Competitor("tati"));
-        Master master = (Master) this.createComp(this.joueurs, this.journalists);
+        Master master = (Master) this.createComp(this.joueurs);
 
         assertTrue(master.getReader() instanceof ScanTerminal);
     }
@@ -257,7 +257,7 @@ public class MasterTest extends CompetitionTest{
         //creating the exepcted list of competitors in the final tournament
         List<Competitor> playersInTournament = new ArrayList<Competitor>();
         int i = 0;
-        for (Championnat league : this.master.getLeagues()){System.out.println(league.getPlayers());
+        for (Championnat league : this.master.getLeagues()){//System.out.println(league.getPlayers());
             playersInTournament.add(league.getPlayers().get(0));
             if(i == 1){
                 playersInTournament.add(league.getPlayers().get(1));

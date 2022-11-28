@@ -12,8 +12,8 @@ import competition.match.mock.MockMatch;
 
 public class ChampionnatTest extends CompetitionTest {
 
-    protected Competition createComp(List<Competitor> joueurs, List<Journalist> journalists)throws InsufficientNumberOfPlayersException{
-        return new Championnat(joueurs, journalists);
+    protected Competition createComp(List<Competitor> joueurs)throws InsufficientNumberOfPlayersException{
+        return new Championnat(joueurs);
     }
 
     /**
