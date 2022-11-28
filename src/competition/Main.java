@@ -4,6 +4,7 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.journalist.*;
 
 /**
  * The main program that launchs a competition with its participants.
@@ -20,8 +21,12 @@ public class Main{
         //creating the list of players, initially emtpy.
         List<Competitor> players = new ArrayList<Competitor>();
 
-        //initialise the factory instance.
+        //declare the factory instance.
         CompetitionFactory factory = new CompetitionFactory();
+
+        //declare the list of journalists.
+        List<Journalist> journalists = new ArrayList<Journalist>();
+        journalists.add(new ReportResultsJournalist("FIFA"));
 
         //building the list of players
         for (int i = 1; i < args.length; i++){
@@ -33,7 +38,7 @@ public class Main{
         Competition competition;
         try {
             //getting the correct type of match using the factory design pattern.
-            competition = factory.getCompetition(args[0], players);
+            competition = factory.getCompetition(args[0], players, journalists);
         }
         catch(Exception e){
             System.out.println("Please enter the required number of players in the competition and try again");
