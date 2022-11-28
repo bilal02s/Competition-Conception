@@ -5,6 +5,9 @@ import java.lang.Math;
 import competition.*;
 import competition.exception.*;
 import competition.io.displayer.*;
+import competition.journalist.report.*;
+import competition.journalist.*;
+import competition.match.State;
 
 /**
  * Tournoi representing a tournament.
@@ -18,8 +21,8 @@ public class Tournoi extends Competition {
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
         @throws WrongNumberOfPlayersException if the number of players is not a power of 2.
      */
-    public Tournoi (List<Competitor> players) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
-        super(players);
+    public Tournoi (List<Competitor> players, List<Journalist> journalists) throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException {
+        super(players, journalists);
 
         if (! Tournoi.isPowerOf2(players.size())) {
             throw new WrongNumberOfPlayersException("the number of players in this competition is not a power of 2");
@@ -53,6 +56,29 @@ public class Tournoi extends Competition {
     }
 
     /**
+        Overloads Competition's playMatch method, after the execution of the original method,
+        if the result is a draw, then go to tie break in order to determine the winner.
+        @param c1 the first competitor
+        @param c2 the second competitor
+        @return the winner of the two competitors
+     */
+    protected Report playMatch(Competitor c1, Competitor c2){
+        Report report = super.playMatch(c1, c2);
+
+        if (report.getMatchState() == State.VICTORY){//if it is a victory, return the report.
+            return report;
+        }
+
+        //if it's a draw, launch a tie break!
+        do{
+            this.displayer.writeMessage("The last match was a tie, we will proceed to a tie breaker match!");
+            report = super.playMatch(c1, c2);
+        } while(report.getMatchState() == State.DRAW);
+
+        return report;
+    }
+
+    /**
         initialises the initial conditions of play : matchs distribution across players.
         plays the matchs between players.
         in this type of competition each player are paired two by two, and then winners will play against winners.
@@ -83,7 +109,8 @@ public class Tournoi extends Competition {
                 //so we can take from the iterator two players at once without the risk of raising an error.
                 Competitor c1 = (Competitor) itr.next();
                 Competitor c2 = (Competitor) itr.next();
-                Competitor winner = this.playMatch(c1, c2);
+                Report report = this.playMatch(c1, c2);
+                Competitor winner = report.getWinner();
                 nextRoundPlayers.add(winner);
             }
 

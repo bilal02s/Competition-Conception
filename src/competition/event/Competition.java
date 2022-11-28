@@ -6,6 +6,7 @@ import competition.*;
 import competition.exception.*;
 import competition.io.displayer.*;
 import competition.journalist.report.*;
+import competition.journalist.*;
 import competition.match.*;
 
 /**
@@ -15,11 +16,13 @@ public abstract class Competition {
     /** List of competitors */
     protected final List<Competitor> competitors; 
     /** Result as integer mapped to each competitor */
-    protected Map<Competitor, Integer> results;
+    protected Map<Competitor, Float> results;
     /** A displayer to display match's results */
     protected Displayer displayer;
     /** A match instance giving us the result of a match between two competitor */
     protected Match match;
+    /** A list of journalist and bookmakers assisting to the competition */
+    protected List<Journalist> journalists;
 
     /**
         initialise the attribut competitors with the players given parameter.
@@ -29,16 +32,17 @@ public abstract class Competition {
         @param competitors List of participants.
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 2.
      */
-    public Competition(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
+    public Competition(List<Competitor> competitors, List<Journalist> journalists) throws InsufficientNumberOfPlayersException{
         if(competitors.size() < 2){
             throw new InsufficientNumberOfPlayersException("A competition must have at least two players.");
         }
 
         this.competitors = competitors;
-        this.results = new HashMap<Competitor, Integer>();
+        this.journalists = journalists;
+        this.results = new HashMap<Competitor, Float>();
 
         for (Competitor c : competitors){
-            results.put(c, 0);
+            results.put(c, 0.0f);
         }
 
         this.displayer = new PrintConsole();
@@ -94,6 +98,14 @@ public abstract class Competition {
     }
 
     /**
+        returns the list of journalists assisting to this competition
+        @return the list of journalists
+     */
+    public List<Journalist> getJournalists(){
+        return this.journalists;
+    }
+
+    /**
         launch the matchs between all players.
      */
     public void play() {
@@ -106,31 +118,69 @@ public abstract class Competition {
      */
     protected abstract void play(List<Competitor> players);
 
+
+    /**
+        Sends the report given in parameter to all the journalists in this competition.
+        the report correspond to one of the matchs played during this competition.
+        @param report a match's report
+     */
+    protected void diffuseReport(Report report){
+        for (Journalist journalist : this.getJournalists()){
+            journalist.printReport(report);
+        }
+    }
+
     /**
         plays a type of match between the two competitors given in parameter.
         after receiving the winner, his score is incremented by one.
+        in case of a draw, increment both player's scores by 0.5
         the winner is returned.
         @param c1 first competitor
         @param c2 second competitor
-        @return the winner between the two competitors
+        @return the report of the match, containing the result, scores of each competitor.
      */
-    protected Competitor playMatch(Competitor c1, Competitor c2) {
-        Competitor winner = this.match.playMatch(c1, c2);
+    protected Report playMatch(Competitor c1, Competitor c2) {
+        Report report = this.match.playMatch(c1, c2);
+        Competitor winner = report.getWinner();
+        Competitor loser = report.getLoser();
 
-        int oldScore = this.results.get(winner);
-        this.results.put(winner, oldScore + 1);
+        //update scores
+        float oldWinnerScore = this.results.get(winner);
+        float oldLoserScore = this.results.get(loser);
+        float newWinnerScore;
+        float newLoserScore;
+
+        //message to display
+        String msg = c1 + " vs " + c2 + " --> ";
+
+        if (report.getMatchState() == State.VICTORY){//in the case of a victory, add one to the winner's score 
+            newWinnerScore = oldWinnerScore + 1;
+            newLoserScore = oldLoserScore;
+            msg += winner + " wins!";
+        }
+        else{//in case of a draw, increase both competitor's score by 0.5
+            newWinnerScore = oldWinnerScore + 0.5f;
+            newLoserScore = oldLoserScore + 0.5f;
+            msg += " Its a draw!";
+        }
+
+        this.results.put(winner, newWinnerScore);
+        this.results.put(loser, newLoserScore);
 
         //print to the console
-        this.displayer.writeMessage(c1 + " vs " + c2 + " --> " + winner + " wins!");
+        this.displayer.writeMessage(msg);
 
-        return winner;
+        //diffuse the report to all the journalists
+        this.diffuseReport(report);
+
+        return report;
     }
 
     /**
         returns the hashmap which maps each player in the competiton to his result expressed as an integer, sorted in descending order.
         @return sorted map of the results.
      */
-    public Map<Competitor, Integer> ranking() {
+    public Map<Competitor, Float> ranking() {
         return MapUtil.sortByDescendingValue(this.results);
     }
 
@@ -138,8 +188,9 @@ public abstract class Competition {
         displays through the displayer instance, the ranking of the players in this competition.
      */
     public void displayRanking(){
-        Map<Competitor, Integer> ranks = this.ranking();
+        Map<Competitor, Float> ranks = this.ranking();
 
+        this.displayer.writeMessage("## THE RANKINGS ##");
         for (Competitor c : ranks.keySet()){
             this.displayer.writeMessage(c + " - " + ranks.get(c));
         }

@@ -3,6 +3,7 @@ package competition.event;
 import competition.*;
 import competition.event.*;
 import competition.io.displayer.*;
+import competition.journalist.*;
 import competition.io.reader.*;
 import competition.exception.*;
 import competition.match.*;
@@ -31,8 +32,8 @@ public class Master extends Competition{
         @param competitors List of participants
         @throws InsufficientNumberOfPlayersException if the number of players in the list is less than 4.
      */
-    public Master(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
-        super(competitors);
+    public Master(List<Competitor> competitors, List<Journalist> journalists) throws InsufficientNumberOfPlayersException{
+        super(competitors, journalists);
 
         if(competitors.size() < 3){
             throw new InsufficientNumberOfPlayersException("A master must have at least 4 players.");
@@ -86,7 +87,7 @@ public class Master extends Competition{
         Competition competition;
         
         try{//in case any exception occurs in the instantiation of the league, it is to be thrown as a runtime exception.
-            competition = this.factory.getCompetition(name, competitors);
+            competition = this.factory.getCompetition(name, competitors, this.getJournalists());
         }
         catch(Exception e){
             throw new CanNotCreateCompetitionException(e.getMessage());
@@ -175,7 +176,9 @@ public class Master extends Competition{
         int leagueCounter = 1;
 
         for(Championnat league : this.leagues){
+            this.displayer.writeMessage("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             this.displayer.writeMessage("League number " + leagueCounter + " will be starting");
+            this.displayer.writeMessage("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             leagueCounter++;
             league.play();
             league.displayRanking();
@@ -196,7 +199,7 @@ public class Master extends Competition{
 
         int counter = 0;
         List<Competitor> firstPlayers = new ArrayList<Competitor>();
-        Map<Competitor, Integer> ranking = league.ranking();
+        Map<Competitor, Float> ranking = league.ranking();
 
         for (Competitor competitor : ranking.keySet()){
             if (counter >= firstNplayers){
@@ -219,7 +222,7 @@ public class Master extends Competition{
      */
     private List<Competitor> pickBestNPlayers(){
         List<Competitor> bestNplayers = new ArrayList<Competitor>();
-        Map<Competitor, Integer> toPickFrom = new HashMap<Competitor, Integer>();
+        Map<Competitor, Float> toPickFrom = new HashMap<Competitor, Float>();
 
         //if we do not need any best n players, then return an empty list
         if (this.bestNplayers == 0){
@@ -229,7 +232,7 @@ public class Master extends Competition{
         //iterate over all leagues
         for (Championnat league : this.leagues){
             int counter = 0;
-            Map<Competitor, Integer> ranking = league.ranking();
+            Map<Competitor, Float> ranking = league.ranking();
 
             //iterate over all players sorted by scores in each league
             for (Competitor competitor : ranking.keySet()){
@@ -281,10 +284,10 @@ public class Master extends Competition{
         @param competition the competition from which it will copy the results
      */
     private void copyResults(Competition competition){
-        Map<Competitor, Integer> ranking = competition.ranking();
+        Map<Competitor, Float> ranking = competition.ranking();
 
         for(Competitor competitor : ranking.keySet()){
-            int oldScore = this.results.get(competitor);
+            float oldScore = this.results.get(competitor);
             this.results.put(competitor, oldScore + ranking.get(competitor));
         }
     }
@@ -299,7 +302,9 @@ public class Master extends Competition{
         this.finalTournament = (Tournoi) this.getCompetition("tournament", finalCompetitors);
 
         //display some information about the final tournament
-        this.displayer.writeMessage("We proceed to the final round.");
+        this.displayer.writeMessage("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        this.displayer.writeMessage("We will proceed to the final round.");
+        this.displayer.writeMessage("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         this.displayer.writeMessage("The competitors facing each other in the last tournament are :");
         for (Competitor competitor : finalCompetitors){
            this.displayer.writeMessage(competitor.getName());
@@ -317,6 +322,7 @@ public class Master extends Competition{
         of each phase, running the final tournament to determine the ultimate winner of the master.
      */
     public void play(){
+        this.displayer.writeMessage("|********************  Welcome to the Master  ********************|");
         this.getGroupsInformation();
         this.initLeagues();
         this.displayPools();
