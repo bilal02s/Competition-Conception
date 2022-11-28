@@ -2,10 +2,11 @@ package competition.journalist;
 
 import competition.Competitor;
 import competition.io.displayer.*;
+import competition.journalist.report.*;
 
 public abstract class Journalist{
-    private String name;
-    private Displayer displayer;
+    protected String name;
+    protected Displayer displayer;
 
     /**
         Creates a journalist, assigns to it the name given in parameter.
@@ -34,7 +35,8 @@ public abstract class Journalist{
     }
 
     /**
-        
+        After receiving the report, prints to the console the news that will be diffused to the press.
+        @param report the match's report, containing the score, the winner and the loser.
      */
-    public abstract void PrintReport(Competitor c1, Competitor c2, int winner);
+    public abstract void printReport(Report report);
 }
