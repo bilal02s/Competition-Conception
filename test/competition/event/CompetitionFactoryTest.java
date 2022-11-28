@@ -5,11 +5,13 @@ import org.junit.*;
 import java.util.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.journalist.*;
 import competition.*;
 
 public class CompetitionFactoryTest{
     private CompetitionFactory factory;
     private List<Competitor> players;
+    private List<Journalist> journalists;
 
     /**
         initialise the factory attribut with a CompetitionFactory instance.
@@ -24,6 +26,8 @@ public class CompetitionFactoryTest{
         this.players.add(new Competitor("tata"));
         this.players.add(new Competitor("tutu"));
         this.players.add(new Competitor("tati"));
+
+        this.journalists = new ArrayList<Journalist>();
     }
 
     /**
@@ -32,15 +36,15 @@ public class CompetitionFactoryTest{
      */
     @Test 
     public void nameNullTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition(null, null);
+        Competition competition = this.factory.getCompetition(null, null, null);
         
         assertTrue(competition == null);
 
-        competition = this.factory.getCompetition(null, new ArrayList<Competitor>());
+        competition = this.factory.getCompetition(null, new ArrayList<Competitor>(), new ArrayList<Journalist>());
 
         assertTrue(competition == null);
 
-        competition = this.factory.getCompetition(null, this.players);
+        competition = this.factory.getCompetition(null, this.players, this.journalists);
 
         assertTrue(competition == null);
     }
@@ -51,15 +55,15 @@ public class CompetitionFactoryTest{
      */
     @Test 
     public void wrongNameTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("quelqueChose", null);
+        Competition competition = this.factory.getCompetition("quelqueChose", null, this.journalists);
         
         assertTrue(competition == null);
 
-        competition = this.factory.getCompetition("quelqueChose", new ArrayList<Competitor>());
+        competition = this.factory.getCompetition("quelqueChose", new ArrayList<Competitor>(), this.journalists);
         
         assertTrue(competition == null);
 
-        competition = this.factory.getCompetition("quelqueChose", this.players);
+        competition = this.factory.getCompetition("quelqueChose", this.players, this.journalists);
         
         assertTrue(competition == null);
     }
@@ -70,13 +74,13 @@ public class CompetitionFactoryTest{
      */
      @Test 
      public void tournamentInstanceTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("tournament", this.players);
+        Competition competition = this.factory.getCompetition("tournament", this.players, this.journalists);
         assertTrue(competition instanceof Tournoi);
 
-        competition = this.factory.getCompetition("TourNamEnt", this.players);
+        competition = this.factory.getCompetition("TourNamEnt", this.players, this.journalists);
         assertTrue(competition instanceof Tournoi);
 
-        competition = this.factory.getCompetition("TOURNAMENT", this.players);
+        competition = this.factory.getCompetition("TOURNAMENT", this.players, this.journalists);
         assertTrue(competition instanceof Tournoi);
      }
 
@@ -86,13 +90,13 @@ public class CompetitionFactoryTest{
      */
      @Test 
      public void leagueInstanceTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("league", this.players);
+        Competition competition = this.factory.getCompetition("league", this.players, this.journalists);
         assertTrue(competition instanceof Championnat);
 
-        competition = this.factory.getCompetition("LeAgUe", this.players);
+        competition = this.factory.getCompetition("LeAgUe", this.players, this.journalists);
         assertTrue(competition instanceof Championnat);
 
-        competition = this.factory.getCompetition("LEAGUE", this.players);
+        competition = this.factory.getCompetition("LEAGUE", this.players, this.journalists);
         assertTrue(competition instanceof Championnat);
      }
 
@@ -102,13 +106,13 @@ public class CompetitionFactoryTest{
       */
      @Test 
      public void masterInstanceTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("master", this.players);
+        Competition competition = this.factory.getCompetition("master", this.players, this.journalists);
         assertTrue(competition instanceof Master);
 
-        competition = this.factory.getCompetition("MaStEr", this.players);
+        competition = this.factory.getCompetition("MaStEr", this.players, this.journalists);
         assertTrue(competition instanceof Master);
 
-        competition = this.factory.getCompetition("MASTER", this.players);
+        competition = this.factory.getCompetition("MASTER", this.players, this.journalists);
         assertTrue(competition instanceof Master);
      }
 
@@ -117,11 +121,11 @@ public class CompetitionFactoryTest{
      */
      @Test 
      public void InstancePlayersTest() throws WrongNumberOfPlayersException, InsufficientNumberOfPlayersException{
-        Competition competition = this.factory.getCompetition("Tournament", this.players);
+        Competition competition = this.factory.getCompetition("Tournament", this.players, this.journalists);
 
         assertSame(this.players, competition.getPlayers());
 
-        competition = this.factory.getCompetition("League", this.players);
+        competition = this.factory.getCompetition("League", this.players, this.journalists);
 
         assertSame(this.players, competition.getPlayers());
      }

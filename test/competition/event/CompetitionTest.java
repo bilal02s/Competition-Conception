@@ -7,13 +7,15 @@ import competition.*;
 import competition.event.*;
 import competition.exception.*;
 import competition.match.*;
+import competition.journalist.*;
 import competition.io.displayer.*;
 
 public abstract class CompetitionTest {
     protected Competition comp;
     protected List<Competitor> joueurs;
+    protected List<Journalist> journalists;
 
-    protected abstract Competition createComp(List<Competitor> joueurs) throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException;
+    protected abstract Competition createComp(List<Competitor> joueurs, List<Journalist> journalists) throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException;
 
     @Before 
     public void init() {
@@ -23,8 +25,10 @@ public abstract class CompetitionTest {
         this.joueurs.add(new Competitor("tutu"));
         this.joueurs.add(new Competitor("tati"));
 
+        this.journalists = new ArrayList<Journalist>();
+
         try{
-            this.comp = this.createComp(this.joueurs);
+            this.comp = this.createComp(this.joueurs, this.journalists);
         }
         catch(Exception e){
             fail();
@@ -58,8 +62,8 @@ public abstract class CompetitionTest {
     @Test 
     public void test2Constructor() {
         //we need to verify that all match scores are assigned to zero at the beginning.
-        Map<Competitor, Integer> ranking = this.comp.ranking();
-        for (int i : ranking.values()){
+        Map<Competitor, Float> ranking = this.comp.ranking();
+        for (float i : ranking.values()){
             assertTrue(i == 0);
         }
     }
@@ -82,7 +86,7 @@ public abstract class CompetitionTest {
         joueurs.add(new Competitor("tata"));
         joueurs.add(new Competitor("tutu"));
         joueurs.add(new Competitor("tati"));
-        Competition competition = this.createComp(joueurs);
+        Competition competition = this.createComp(joueurs, this.journalists);
 
         assertTrue(competition.getDisplayer() instanceof PrintConsole);
     }
@@ -119,7 +123,7 @@ public abstract class CompetitionTest {
     @Test (expected = InsufficientNumberOfPlayersException.class)
     public void test1ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
         List<Competitor> players = new ArrayList<Competitor>();
-        this.comp = this.createComp(players);
+        this.comp = this.createComp(players, this.journalists);
     }
 
     /**
@@ -130,7 +134,7 @@ public abstract class CompetitionTest {
     public void test2ConstructorException() throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException {
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
-        this.comp = this.createComp(players);
+        this.comp = this.createComp(players, this.journalists);
     }
 
     /**
@@ -142,7 +146,7 @@ public abstract class CompetitionTest {
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
-        this.comp = this.createComp(players);
+        this.comp = this.createComp(players, this.journalists);
     }
 
     /**
@@ -176,11 +180,11 @@ public abstract class CompetitionTest {
     public void testRanking() {
         //firstly we need to call method play, in order to generate the results.
         this.comp.play();
-        Map<Competitor, Integer> ranking = this.comp.ranking();
-        int prev = Integer.MAX_VALUE; //resultat precedent qu'il faut etre superieur au resultat courant (ranking triee par ordre decroissant)
+        Map<Competitor, Float> ranking = this.comp.ranking();
+        float prev = Integer.MAX_VALUE; //resultat precedent qu'il faut etre superieur au resultat courant (ranking triee par ordre decroissant)
 
         // verify that the final results are ordered in descending order
-        for (int i : ranking.values()){
+        for (float i : ranking.values()){
             if (i > prev) {
                 fail();
             }

@@ -8,6 +8,7 @@ import competition.event.*;
 import competition.exception.*;
 import competition.io.reader.*;
 import competition.io.displayer.*;
+import competition.journalist.*;
 import competition.match.mock.MockMatch;
 import competition.io.mock.*;
 
@@ -18,8 +19,8 @@ public class MasterTest extends CompetitionTest{
     private static String question1 = "How many pools do you want to have?";
     private static String question2 = "How many players goes to the final round?";
 
-    protected Competition createComp(List<Competitor> competitors) throws InsufficientNumberOfPlayersException{
-        return new Master(competitors);
+    protected Competition createComp(List<Competitor> competitors, List<Journalist> journalists) throws InsufficientNumberOfPlayersException{
+        return new Master(competitors, journalists);
     }
 
     private MockDisplayerReader initMock(){
@@ -48,8 +49,10 @@ public class MasterTest extends CompetitionTest{
         this.players.add(new Competitor("foo1"));
         this.players.add(new Competitor("foo2"));
 
+        this.journalists = new ArrayList<Journalist>();
+
         try{
-            this.master = new Master(this.players);
+            this.master = new Master(this.players, this.journalists);
         }
         catch(Exception e){
             fail();
@@ -70,7 +73,7 @@ public class MasterTest extends CompetitionTest{
         List<Competitor> players = new ArrayList<Competitor>();
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
-        this.comp = this.createComp(players);
+        this.comp = this.createComp(players, this.journalists);
     }
 
     /**
@@ -83,7 +86,7 @@ public class MasterTest extends CompetitionTest{
         players.add(new Competitor("toto"));
         players.add(new Competitor("tata"));
         players.add(new Competitor("titi"));
-        this.comp = this.createComp(players);
+        this.comp = this.createComp(players, this.journalists);
     }
 
     /**
@@ -96,7 +99,7 @@ public class MasterTest extends CompetitionTest{
         joueurs.add(new Competitor("tata"));
         joueurs.add(new Competitor("tutu"));
         joueurs.add(new Competitor("tati"));
-        Master master = (Master) this.createComp(this.joueurs);
+        Master master = (Master) this.createComp(this.joueurs, this.journalists);
 
         assertTrue(master.getReader() instanceof ScanTerminal);
     }
@@ -275,26 +278,26 @@ public class MasterTest extends CompetitionTest{
         this.master.play();
 
         //expected results
-        Map<Competitor, Integer> results= new HashMap<Competitor, Integer>();
+        Map<Competitor, Float> results= new HashMap<Competitor, Float>();
         //initialise values
         for (Competitor competitor : this.players){
-            results.put(competitor, 0);
+            results.put(competitor, 0.0f);
         }
 
         //add all competitions results
         //add leagues results
         for(Championnat league : this.master.getLeagues()){
-            Map<Competitor, Integer> leagueResults = league.ranking();
+            Map<Competitor, Float> leagueResults = league.ranking();
             for (Competitor competitor : leagueResults.keySet()){
-                int oldScore = results.get(competitor);
+                float oldScore = results.get(competitor);
                 results.put(competitor, oldScore + leagueResults.get(competitor));
             }
         }
         
         //add final tournament's results
-        Map<Competitor, Integer>  finalTournamentResults = this.master.getFinalTournament().ranking();
+        Map<Competitor, Float>  finalTournamentResults = this.master.getFinalTournament().ranking();
         for(Competitor competitor : finalTournamentResults.keySet()){
-            int oldScore = results.get(competitor);
+            float oldScore = results.get(competitor);
             results.put(competitor, oldScore + finalTournamentResults.get(competitor));
         }
 

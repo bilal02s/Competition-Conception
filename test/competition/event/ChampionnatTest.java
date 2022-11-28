@@ -6,13 +6,14 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.journalist.*;
 import competition.io.displayer.*;
 import competition.match.mock.MockMatch;
 
 public class ChampionnatTest extends CompetitionTest {
 
-    protected Competition createComp(List<Competitor> joueurs)throws InsufficientNumberOfPlayersException{
-        return new Championnat(joueurs);
+    protected Competition createComp(List<Competitor> joueurs, List<Journalist> journalists)throws InsufficientNumberOfPlayersException{
+        return new Championnat(joueurs, journalists);
     }
 
     /**
@@ -26,11 +27,11 @@ public class ChampionnatTest extends CompetitionTest {
         //in each match played there is always one winner, thus we have n*(n-1) wins.
         //thus the sum of all wins must be equal to n*(n-1)
         this.comp.play();
-        int sommeVictoire = 0;
+        float sommeVictoire = 0;
         int n = this.comp.getNbPlayers();
-        Map<Competitor, Integer> ranking = this.comp.ranking();
+        Map<Competitor, Float> ranking = this.comp.ranking();
 
-        for (int i : ranking.values()){
+        for (float i : ranking.values()){
             sommeVictoire += i;
         }
 
@@ -47,16 +48,14 @@ public class ChampionnatTest extends CompetitionTest {
         this.comp.setMatch(new MockMatch());
         this.comp.play();
 
-        Competitor firstPlayer = this.joueurs.get(0);
-
         //we expect all the final rankings and scores to be the same.
         //since every player will play with every other player, and the winner is the first player, then every player will win against every other player.
-        //hence all player's score must be equal to the first player's score.
-        Map<Competitor, Integer> ranking = this.comp.ranking();
-        int firstPlayerScore = ranking.get(firstPlayer);
+        //hence all player's score must be equal to the number of players iin the league minus one.
+        Map<Competitor, Float> ranking = this.comp.ranking();
+        float playersScore = this.comp.getNbPlayers() - 1;
 
-        for (int i : ranking.values()){
-            assertEquals(firstPlayerScore, i);
+        for (float i : ranking.values()){
+            assertEquals(playersScore, i, 0.01);
         }
     }
 

@@ -6,13 +6,14 @@ import java.util.*;
 import competition.*;
 import competition.event.*;
 import competition.exception.*;
+import competition.journalist.*;
 import competition.io.displayer.*;
 import competition.match.mock.MockMatch;
 
 public class TournoiTest extends CompetitionTest {
 
-    protected Competition createComp(List<Competitor> joueurs)throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
-        return new Tournoi(joueurs);
+    protected Competition createComp(List<Competitor> joueurs, List<Journalist> journalists)throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException{
+        return new Tournoi(joueurs, journalists);
     }
 
     /**
@@ -25,7 +26,7 @@ public class TournoiTest extends CompetitionTest {
         players.add(new Competitor("toto"));
         players.add(new Competitor("tutu"));
         players.add(new Competitor("tata"));
-        this.comp = this.createComp(players);
+        this.comp = this.createComp(players, this.journalists);
     }
 
     /**
@@ -39,11 +40,11 @@ public class TournoiTest extends CompetitionTest {
         //in each match played there is always one winner, thus we must have at the end (n-1) wins.
         //thus the sum of all wins must be equal to (n-1)
         this.comp.play();
-        int sommeVictoire = 0;
+        float sommeVictoire = 0;
         int n = this.comp.getNbPlayers();
-        Map<Competitor, Integer> ranking = this.comp.ranking();
+        Map<Competitor, Float> ranking = this.comp.ranking();
 
-        for (int i : ranking.values()){
+        for (float i : ranking.values()){
             sommeVictoire += i;
         }
 
@@ -67,11 +68,11 @@ public class TournoiTest extends CompetitionTest {
 
         //since matchs are paired first two players against each other, and then the winners to the next round are also paired with the first two players againt each other and so on.
         //we expect the winner of the competition to be the first player
-        Map<Competitor, Integer> ranking = this.comp.ranking();
-        int firstPlayerScore = ranking.get(firstPlayer);
-        int secondPlayerScore = ranking.get(secondPlayer);
-        int thirdPlayerScore = ranking.get(thirdPlayer);
-        int fourthPlayerScore = ranking.get(fourthPlayer);
+        Map<Competitor, Float> ranking = this.comp.ranking();
+        float firstPlayerScore = ranking.get(firstPlayer);
+        float secondPlayerScore = ranking.get(secondPlayer);
+        float thirdPlayerScore = ranking.get(thirdPlayer);
+        float fourthPlayerScore = ranking.get(fourthPlayer);
 
         assertTrue(firstPlayerScore > thirdPlayerScore);
         assertTrue(thirdPlayerScore > secondPlayerScore);
