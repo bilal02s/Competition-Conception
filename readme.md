@@ -129,6 +129,27 @@ Whats new ?
    4. * Adding a new exception extending runtime exception.
       * While the core implementation of the master class is a composition of leagues and tournament, these two classes throws exception on the initialisation phase, meant to alert the client on the usability of these two objects. Since now they are being used by another object and not a client, their corresponding prerequisites will be dealt with by this object and thus any exception that may occur is out of reach of the client, and he can not recover from it, thus the creation of a new runtime exception decision is found important.
 
+### Version 3
+
+What's new?
+   1. A State enum is added, representing the state of a match. Now a match's state can either be a victory for one of the competitors or a draw.
+   2. * A report interface has been created to model report objects holding important match information in order to make it clear and concise.
+      * the match interface is modified, the playMatch method will now return a report after playing a match, instead of returning just the winner competitor. 
+      * A report will contain the state of the match (Victory or Draw) and also a two pair representing the two competitors with their respective score each. (for example if we have two competitors "x" and "y" and the match score was "3-2" in favor of "x", then the first pair will contain (x, 3) and the second pair will contain (y, 2))
+   3. * A Pair data structure have been added, it is a parameterized type, holding a single key and value pair, the key and value are final attribut, they are set during the construction of the pair, and cannot be changed later. The pair object possese two methods, getKey and getValue.
+      * This data structure is added in order to organize data in our competition, the conception of a match's report is meant to contain two pairs holding the two competitors and their corresponding scores. This implementation will make it easier to work with scores and determine the winner.
+   4. RandomWinner will now assign to each competitor a random score and determine the winner between the two competitors according the higher score and then return a report containing the information
+   5. * StandardReport object will be used as the report object used by competitions and match.
+      * During the construction of the StandardReport, the winner is determined by comparing the first competitors score to the second's and chosing the highest. In case of a draw the order does not matter.
+   6. * Journalist abstract class added, modeling the journalists that will be assisting competitions and diffusing results to the press.
+   7. * All competitions (Master, League, Tournament) will now accept a draw as a result of a given match between two competitors, in the case of a draw both competitor's scores will be incremented by 0.5. Thus the score are now stored as floating numbers instead of integer.
+      * A new attribut has been added to all competitions : a list of Journalist.
+      * The list of journalists is to be given during the construction of the competition. The journalists will assist to all the competition's match. After playing each match, the corresponding report is given to every journalist to diffuse his own news.
+      * A tournament is a type of competitions where a draw is not accepted as a result of a given match. In the case of draw, both competitors will be sent to play a tie breaker match. the two competitor's will keep playing a tie breaker match until one of them is victorious. The displayer will inform when a tie breaker match takes place.
+   8. The displaying is made beautiful, informations are displayed clearly.
+
+   
+
 ## How TO
 
 ### Getting the files
