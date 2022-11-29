@@ -10,6 +10,15 @@ import competition.journalist.*;
  * The main program that launchs a competition with its participants.
  */
 public class Main{
+    private static List<String> news = new ArrayList<String>();
+
+    /**
+        adding values to the static attribut news, to be used in the main
+     */
+    private static void buildNews(){
+        Main.news.add(" : %s score is %d, %s score is %d");
+        Main.news.add(" : %s actual quotation is %d | %s actual quotation is %d");
+    }
 
     /**
         receives the competition type and the competitors in the args parameter as strings.
@@ -18,6 +27,9 @@ public class Main{
         @param args the argument given in the terminal, expecting a competition name such as tournament or league, followed by the names of players.
      */
     public static void main(String args[]) {
+        //init news
+        Main.buildNews();
+
         //creating the list of players, initially emtpy.
         List<Competitor> players = new ArrayList<Competitor>();
 
@@ -26,7 +38,8 @@ public class Main{
 
         //declare the list of journalists.
         List<Journalist> journalists = new ArrayList<Journalist>();
-        journalists.add(new ReportResultsJournalist("FIFA"));
+        journalists.add(new ReportResultsJournalist("FIFA", Main.news.subList(0, 1)));
+        journalists.add(new Bookmaker("ParisonsSport", Main.news.subList(1, 2)));
 
         //building the list of players
         for (int i = 1; i < args.length; i++){
@@ -48,6 +61,11 @@ public class Main{
         if (competition == null){
             System.out.println("Please select a correct competition type and try again");
             return;
+        }
+
+        //adding all the journalist to the competition
+        for(Journalist journalist : journalists){
+            competition.addJournalist(journalist);
         }
 
         //launching all the matchs

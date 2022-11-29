@@ -317,7 +317,6 @@ public class Master extends Competition{
 
         this.finalTournament.play();
         this.finalTournament.displayRanking();
-        this.displayer.writeMessage("");
     }
 
     /**
@@ -326,6 +325,7 @@ public class Master extends Competition{
         of each phase, running the final tournament to determine the ultimate winner of the master.
      */
     public void play(){
+        this.displayer.writeMessage("");
         this.displayer.writeMessage("|********************  Welcome to the Master  ********************|");
         this.getGroupsInformation();
         this.initLeagues();

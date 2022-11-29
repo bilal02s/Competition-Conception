@@ -169,6 +169,7 @@ public abstract class Competition {
         msg += (report.getMatchState() == State.DRAW ? "Its a draw!" : winner + " wins!");
 
         //print to the console
+        this.displayer.writeMessage("");
         this.displayer.writeMessage(msg);
 
         //diffuse the report to all the journalists
@@ -217,6 +218,7 @@ public abstract class Competition {
     public void displayRanking(){
         Map<Competitor, Float> ranks = this.ranking();
 
+        this.displayer.writeMessage("");
         this.displayer.writeMessage("## THE RANKINGS ##");
         for (Competitor c : ranks.keySet()){
             this.displayer.writeMessage(c + " - " + ranks.get(c));

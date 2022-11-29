@@ -9,6 +9,7 @@ import competition.journalist.report.*;
  * Creates a match where the outcome is random.
  */
 public class RandomWinner implements Match{
+    private static final Random rand = new Random();
 
     /**
         plays a match between the two competitors given in parameter.
@@ -19,10 +20,9 @@ public class RandomWinner implements Match{
         @return A report of the match
      */
     public Report playMatch(Competitor c1, Competitor c2){
-        Random rand =  new Random();
         Report report;
-        int score1 = rand.nextInt(11);
-        int score2 = rand.nextInt(11);
+        int score1 = RandomWinner.rand.nextInt(11);
+        int score2 = RandomWinner.rand.nextInt(11);
 
         State state = (score1 == score2 ? State.DRAW : State.VICTORY);
 
