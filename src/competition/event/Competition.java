@@ -6,6 +6,7 @@ import competition.*;
 import competition.exception.*;
 import competition.io.displayer.*;
 import competition.journalist.report.*;
+import competition.match.event.*;
 import competition.journalist.*;
 import competition.match.*;
 
@@ -21,8 +22,8 @@ public abstract class Competition {
     protected Displayer displayer;
     /** A match instance giving us the result of a match between two competitor */
     protected Match match;
-    /** A list of journalist and bookmakers assisting to the competition */
-    protected List<Journalist> journalists;
+    /** A list of MatchListener (journalist and bookmakers) assisting to the competition */
+    protected List<MatchListener> matchListeners;
 
     /**
         initialise the attribut competitors with the players given parameter.
@@ -38,7 +39,7 @@ public abstract class Competition {
         }
 
         this.competitors = competitors;
-        this.journalists = new ArrayList<Journalist>();
+        this.matchListeners = new ArrayList<MatchListener>();
         this.results = new HashMap<Competitor, Float>();
 
         for (Competitor c : competitors){
@@ -98,27 +99,27 @@ public abstract class Competition {
     }
 
     /**
-        Receives a journalist in parameter, add it to the list of journalists.
-        @param journalist the journalist to be added
+        Receives a matchListener in parameter, add it to the list of matchListeners.
+        @param matchListener the matchListener to be added
      */
-    public void addJournalist(Journalist journalist){
-        this.journalists.add(journalist);
+    public void addMatchListener(MatchListener matchListener){
+        this.matchListeners.add(matchListener);
     }
 
     /**
-        Receives a journalist in parameter, remove it to the list of journalists.
-        @param journalist the journalist to be removed
+        Receives a matchListener in parameter, remove it to the list of matchListeners.
+        @param matchListener the matchListener to be removed
      */
-    public void removeJournalist(Journalist journalist){
-        this.journalists.remove(journalist);
+    public void removeMatchListener(MatchListener matchListener){
+        this.matchListeners.remove(matchListener);
     }
 
     /**
-        returns the list of journalists assisting to this competition
-        @return the list of journalists
+        returns the list of matchListeners assisting to this competition
+        @return the list of matchListeners
      */
-    public List<Journalist> getJournalists(){
-        return this.journalists;
+    public List<MatchListener> getMatchListeners(){
+        return this.matchListeners;
     }
 
     /**
@@ -136,13 +137,15 @@ public abstract class Competition {
 
 
     /**
-        Sends the report given in parameter to all the journalists in this competition.
+        Sends the report given in parameter to all the matchListeners in this competition.
         the report correspond to one of the matchs played during this competition.
         @param report a match's report
      */
-    protected void diffuseReport(Report report){
-        for (Journalist journalist : this.getJournalists()){
-            journalist.printReport(report);
+    protected void fireMatchEvent(Report report){
+        MatchEvent event = new MatchEvent(this, report);
+
+        for (MatchListener matchListener : this.getMatchListeners()){
+            matchListener.handleEvent(event);
         }
     }
 
@@ -151,7 +154,7 @@ public abstract class Competition {
         after receiving the winner, his score is incremented by one.
         in case of a draw, increment both player's scores by 0.5
         the winner is returned.
-        the report is diffused to all the journalists.
+        the report is diffused to all the matchListeners.
         @param c1 first competitor
         @param c2 second competitor
         @return the report of the match, containing the result, scores of each competitor.
@@ -172,8 +175,8 @@ public abstract class Competition {
         this.displayer.writeMessage("");
         this.displayer.writeMessage(msg);
 
-        //diffuse the report to all the journalists
-        this.diffuseReport(report);
+        //diffuse the report to all the matchListeners
+        this.fireMatchEvent(report);
 
         return report;
     }

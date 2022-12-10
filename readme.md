@@ -142,12 +142,14 @@ What's new? (Spoiler alert : Observer/Observable design pattern!)
    5. * StandardReport object will be used as the report object used by competitions and match.
       * During the construction of the StandardReport, the winner is determined by comparing the first competitors score to the second's and chosing the highest. In case of a draw the order does not matter.
    6. * Implementing Observer/Observable design pattern : 
+      * MatchListener interface will act as the interface for the Observer, its method handleEvent will take as an event an instance of MatchEvent to be described down below.
       * Journalist abstract class added, modeling the journalists that will be assisting competitions and diffusing results to the press.
       The Journalist will take the Observer role, essentially it is going to observe every match and then take action at the end of it, in this case print to the console a piece of news.
-      * The competitions will be the observable, containing a list of observers (journalists), and being the object in which the match are played inside. after the end of each match and the generation of the corresponding report, this report will be sent as a parameter through a call to the appropriate method in every journalist object inside the competition, assuring the transmission of all the important information through the event, in this case the event is the report.
+      Its method handleEvent will extract the report from the event and will call the protected method printReport as an action to the received event.
+      * The competitions will be the observable, containing a list of observers (MatchListeners), and being the object in which the match are played inside. after the end of each match and the generation of the corresponding report, a match event will be constructed and will be given this report, and it will be sent as a parameter through a call to the appropriate method in every MatchListener object inside the competition, assuring the transmission of all the important information through the event, in this case the event is the MatchEvent.
    7. * All competitions (Master, League, Tournament) will now accept a draw as a result of a given match between two competitors, in the case of a draw both competitor's scores will be incremented by 0.5. Thus the score are now stored as floating numbers instead of integer.
-      * A new attribut has been added to all competitions : a list of Journalist.
-      * The list of journalists is to be given during the construction of the competition. The journalists will assist to all the competition's match. After playing each match, the corresponding report is given to every journalist to diffuse his own news.
+      * A new attribut has been added to all competitions : a list of MatchListeners.
+      * The matchListeners are added one by one to the competition through the call to addMatchListener, and could be removed through the call to removeMatchListener. The matchListeners will assist to all the competition's match. After playing each match, the corresponding event is given to every journalist to diffuse his own news.
       * A tournament is a type of competitions where a draw is not accepted as a result of a given match. In the case of draw, both competitors will be sent to play a tie breaker match. the two competitor's will keep playing a tie breaker match until one of them is victorious. The displayer will inform when a tie breaker match takes place.
    8. The displaying is made beautiful, informations are displayed clearly.
 

@@ -37,9 +37,9 @@ public class Main{
         CompetitionFactory factory = new CompetitionFactory();
 
         //declare the list of journalists.
-        List<Journalist> journalists = new ArrayList<Journalist>();
-        journalists.add(new ReportResultsJournalist("FIFA", Main.news.subList(0, 1)));
-        journalists.add(new Bookmaker("ParisonsSport", Main.news.subList(1, 2)));
+        List<MatchListener> matchListeners = new ArrayList<MatchListener>();
+        matchListeners.add(new ReportResultsJournalist("FIFA", Main.news.subList(0, 1)));
+        matchListeners.add(new Bookmaker("ParisonsSport", Main.news.subList(1, 2)));
 
         //building the list of players
         for (int i = 1; i < args.length; i++){
@@ -64,8 +64,8 @@ public class Main{
         }
 
         //adding all the journalist to the competition
-        for(Journalist journalist : journalists){
-            competition.addJournalist(journalist);
+        for(MatchListener matchListener : matchListeners){
+            competition.addMatchListener(matchListener);
         }
 
         //launching all the matchs

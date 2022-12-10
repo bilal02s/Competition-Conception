@@ -3,12 +3,14 @@ package competition.journalist;
 import java.util.*;
 import competition.Competitor;
 import competition.io.displayer.*;
+import competition.match.event.MatchEvent;
 import competition.journalist.report.*;
+import competition.journalist.MatchListener;
 
 /**
     A journalist, diffusing article about match when assisting a competition.
  */
-public abstract class Journalist{
+public abstract class Journalist implements MatchListener{
     /** the name of this journalist */
     protected String name;
     /** displayer used to display to the terminal the news */
@@ -48,8 +50,16 @@ public abstract class Journalist{
     }
 
     /**
+        the journalist will print a report correpsonding to the match's report, as a response to the event.
+        @param event the event, a match's event.
+     */
+    public void handleEvent(MatchEvent event){
+        this.printReport(event.getReport());
+    }
+
+    /**
         After receiving the report, prints to the console the news that will be diffused to the press.
         @param report the match's report, containing the score, the winner and the loser.
      */
-    public abstract void printReport(Report report);
+    protected abstract void printReport(Report report);
 }
