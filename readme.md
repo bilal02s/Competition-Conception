@@ -131,17 +131,20 @@ Whats new ?
 
 ### Version 3
 
-What's new?
+What's new? (Spoiler alert : Observer/Observable design pattern!)
    1. A State enum is added, representing the state of a match. Now a match's state can either be a victory for one of the competitors or a draw.
    2. * A report interface has been created to model report objects holding important match information in order to make it clear and concise.
-      * the match interface is modified, the playMatch method will now return a report after playing a match, instead of returning just the winner competitor. 
+      * The match interface is modified, the playMatch method will now return a report after playing a match, instead of returning just the winner competitor. 
       * A report will contain the state of the match (Victory or Draw) and also a two pair representing the two competitors with their respective score each. (for example if we have two competitors "x" and "y" and the match score was "3-2" in favor of "x", then the first pair will contain (x, 3) and the second pair will contain (y, 2))
    3. * A Pair data structure have been added, it is a parameterized type, holding a single key and value pair, the key and value are final attribut, they are set during the construction of the pair, and cannot be changed later. The pair object possese two methods, getKey and getValue.
       * This data structure is added in order to organize data in our competition, the conception of a match's report is meant to contain two pairs holding the two competitors and their corresponding scores. This implementation will make it easier to work with scores and determine the winner.
-   4. RandomWinner will now assign to each competitor a random score and determine the winner between the two competitors according the higher score and then return a report containing the information
+   4. RandomWinner will now assign to each competitor a random score and determine the winner between the two competitors according to the highest score and then return a report containing the information
    5. * StandardReport object will be used as the report object used by competitions and match.
       * During the construction of the StandardReport, the winner is determined by comparing the first competitors score to the second's and chosing the highest. In case of a draw the order does not matter.
-   6. * Journalist abstract class added, modeling the journalists that will be assisting competitions and diffusing results to the press.
+   6. * Implementing Observer/Observable design pattern : 
+      * Journalist abstract class added, modeling the journalists that will be assisting competitions and diffusing results to the press.
+      The Journalist will take the Observer role, essentially it is going to observe every match and then take action at the end of it, in this case print to the console a piece of news.
+      * The competitions will be the observable, containing a list of observers (journalists), and being the object in which the match are played inside. after the end of each match and the generation of the corresponding report, this report will be sent as a parameter through a call to the appropriate method in every journalist object inside the competition, assuring the transmission of all the important information through the event, in this case the event is the report.
    7. * All competitions (Master, League, Tournament) will now accept a draw as a result of a given match between two competitors, in the case of a draw both competitor's scores will be incremented by 0.5. Thus the score are now stored as floating numbers instead of integer.
       * A new attribut has been added to all competitions : a list of Journalist.
       * The list of journalists is to be given during the construction of the competition. The journalists will assist to all the competition's match. After playing each match, the corresponding report is given to every journalist to diffuse his own news.
