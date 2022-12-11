@@ -1,7 +1,9 @@
 package competition.journalist;
 
+import java.util.*;
 import competition.journalist.*;
-import competition.journalist.report.*;
+import competition.match.event.MatchEvent;
+import competition.journalist.report.Report;
 
 /**
     mock journalist, used to test if the call to the method printReport happened or not.
@@ -14,7 +16,7 @@ public class MockJournalist extends Journalist{
         @param name the name of this journalist
      */
     public MockJournalist(String name){
-        super(name);
+        super(name, new ArrayList<String>());
         this.nbMethodCall = 0;
     }
 
@@ -31,7 +33,14 @@ public class MockJournalist extends Journalist{
         each time it is called, the counter is incremented by 1.
         @param report we have no use of the report
      */
-    public void printReport(Report report){
+    public void handleEvent(MatchEvent event){
         this.nbMethodCall += 1;
     }
+
+    /**
+        Overrides Journalist's printReport, this method does nothing in particular.
+        avoids compilation error only.
+        @param report A match's report.
+     */
+    protected void printReport(Report report){}
 }

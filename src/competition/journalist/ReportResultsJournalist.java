@@ -25,7 +25,7 @@ public class ReportResultsJournalist extends Journalist{
         this method will print to the console a message/news corresponding the report it receives in parameter for a given match.
         @param report the match's report
      */
-    public void printReport(Report report){
+    protected void printReport(Report report){
         //retireve the pairs
         Pair<Competitor, Integer> firstPair = report.getFirstCompetitorScore();
         Pair<Competitor, Integer> secondPair = report.getSecondCompetitorScore();

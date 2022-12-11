@@ -34,6 +34,36 @@ public abstract class Journalist implements MatchListener{
     }
 
     /**
+        the journalist will print a report correpsonding to the match's report, as a response to the event.
+        @param event the event, a match's event.
+     */
+    public void handleEvent(MatchEvent event){
+        this.printReport(event.getReport());
+    }
+
+    /**
+        After receiving the report, prints to the console the news that will be diffused to the press.
+        @param report the match's report, containing the score, the winner and the loser.
+     */
+    protected abstract void printReport(Report report);
+
+    /**
+        Sets this competition's displayer type 
+        @param displayer A displayer type instance 
+     */
+    public void setDisplayer(Displayer displayer){
+        this.displayer = displayer; 
+    }
+
+    /**
+        returns this competition's displayer type instance.
+        @return this competition's displayer
+     */
+    public Displayer getDisplayer(){
+        return this.displayer;
+    }
+
+    /**
         Returns the name of this journalist.
         @return this journalist's name
      */
@@ -48,18 +78,4 @@ public abstract class Journalist implements MatchListener{
     public String toString(){
         return this.name;
     }
-
-    /**
-        the journalist will print a report correpsonding to the match's report, as a response to the event.
-        @param event the event, a match's event.
-     */
-    public void handleEvent(MatchEvent event){
-        this.printReport(event.getReport());
-    }
-
-    /**
-        After receiving the report, prints to the console the news that will be diffused to the press.
-        @param report the match's report, containing the score, the winner and the loser.
-     */
-    protected abstract void printReport(Report report);
 }

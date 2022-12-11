@@ -26,6 +26,9 @@ l3s5-projet-coo/
 │       │   ├── IntegerNotPowerOf2Exception.java
 │       │   └── WrongNumberOfPlayersException.java
 │       ├── match/
+│       │   ├── event/
+│       │   │   └── MatchEvent.java
+│       │   ├── State.java
 │       │   ├── Match.java
 │       │   └── RandomWinner.java
 │       ├── io/
@@ -36,10 +39,19 @@ l3s5-projet-coo/
 │       │   ├── reader/
 │       │   │   ├── Reader.java
 │       │   └── └── ScanTerminal.java
+│       ├── journalist/
+│       │   ├── report/
+│       │   │   ├── Report.java
+│       │   │   └── StandardReport.java
+│       │   ├── MatchListener.java
+│       │   ├── Journalist.java
+│       │   ├── Bookmaker.java
+│       │   └── ReportResultsJournalist.java
 │       │
 │       ├── Competitor.java
 │       └── Main.java
 │   └── util/
+│       ├── Pair.java
 │       └── MapUtil.java
 ├── test/
 │   └── competition/
@@ -51,17 +63,29 @@ l3s5-projet-coo/
 │       |  └── CompetitionFactoryTest.java
 │       ├── io/
 │       │  ├── mock/
+│       │  │   ├── MockDisplayer.java
 │       │  │   ├── MockDisplayerReader.java
 │       │  └── └── MockDisplayerReaderException.java
+│       ├── journalist/
+│       │   ├── report/
+│       │   │   └── StandardReportTest.java
+│       │   ├── MockJournalistTest.java
+│       │   ├── JournalistTest.java
+│       │   ├── BookmakerTest.java
+│       │   └── ReportResultsJournalistTest.java
 │       ├── match/
+│       │  ├── event/
+│       │  │   └── MatchEventTest.java
 │       │  ├── mock/
 │       │  │   └── MockMatch.java
-│       │  │   
 │       │  └──RandomWinnerTest.java
 │       │
 │       └── CompetitorTest.java
+│   └── util/
+│       └── PairTest.java
 │
 │
+├── UML/
 ├── .gitignore
 ├── exec.jar
 ├── MakeFile
@@ -92,8 +116,8 @@ modeling different types of matchs. For this version, we are only interested in 
 
    2. * Two inheriting classes Tournoi and Championnat which desginates respectively a tounamenent and a league.  </br>
       * The main difference between these two classes is that each one of them organise match between participants in a different way.
-      * The players in a League plays againt all other players two times, which is taken care of in the protected method play(players : List<Competitor>).
-      * the players in a Tournament plays in a classical format of elimination, which is taken care of in the protected method play(players : List<Competitor>).
+      * The players in a League plays againt all other players two times, which is taken care of in the protected method play(players : List\<Competitor>).
+      * the players in a Tournament plays in a classical format of elimination, which is taken care of in the protected method play(players : List\<Competitor>).
       * Tournament class throws an exception in the construction if the number of given players is not a power of two, thus not compatible with a classical format.
 
    3. * A factory design pattern have been implemented to take care of the choice and construction of the competitions instances.  </br>
@@ -130,6 +154,8 @@ Whats new ?
       * While the core implementation of the master class is a composition of leagues and tournament, these two classes throws exception on the initialisation phase, meant to alert the client on the usability of these two objects. Since now they are being used by another object and not a client, their corresponding prerequisites will be dealt with by this object and thus any exception that may occur is out of reach of the client, and he can not recover from it, thus the creation of a new runtime exception decision is found important.
 
 ### Version 3
+
+![UML](./UML/sport-competition-v3.png)
 
 What's new? (Spoiler alert : Observer/Observable design pattern!)
    1. A State enum is added, representing the state of a match. Now a match's state can either be a victory for one of the competitors or a draw.
@@ -263,7 +289,13 @@ for example executing the test corresponding to Tournoi :
    ```
    * Example:
    ```bash
-           java -classpath classes competition.Main Tournament player1 player2
+           java -classpath classes competition.Main Tournament player1 player2 player3 player4
+   ```
+   ```bash
+           java -classpath classes competition.Main League player1 player2 player3 player4
+   ```
+   ```bash
+           java -classpath classes competition.Main Master p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 p16
    ```
 
    3. You will notice that the Main has been executed, the match are being played, and finally the results will be shown.
@@ -281,7 +313,13 @@ for example executing the test corresponding to Tournoi :
            ```
             * Example:
            ```bash
-           java -jar exec.jar Tournament player1 player2
+           java -jar exec.jar Tournament player1 player2 player3 player4
+           ```
+           ```bash
+           java -jar exec.jar League player1 player2 player3 player4
+           ```
+           ```bash
+           java -jar exec.jar Master p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 p16
            ```
 
     3. You will notice that the Main has been executed, the match are being played, and finally the results will be shown.

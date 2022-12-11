@@ -13,7 +13,7 @@ import competition.io.displayer.*;
 public abstract class CompetitionTest {
     protected Competition comp;
     protected List<Competitor> joueurs;
-    protected List<Journalist> journalists;
+    protected List<MatchListener> matchListeners;
 
     protected abstract Competition createComp(List<Competitor> joueurs) throws InsufficientNumberOfPlayersException, WrongNumberOfPlayersException;
 
@@ -25,7 +25,7 @@ public abstract class CompetitionTest {
         this.joueurs.add(new Competitor("tutu"));
         this.joueurs.add(new Competitor("tati"));
 
-        this.journalists = new ArrayList<Journalist>();
+        this.matchListeners = new ArrayList<MatchListener>();
 
         try{
             this.comp = this.createComp(this.joueurs);
@@ -92,14 +92,14 @@ public abstract class CompetitionTest {
     }
 
     /**
-        test if the constructor assigne an emtpy list to the attribut journalists 
+        test if the constructor assigne an emtpy list to the attribut matchListeners 
         during the construction of a competition.
      */
     @Test
-    public void testJournalistsDefaultValue(){
-        List<Journalist> allJournalists = this.comp.getJournalists();
+    public void testMatchListenersDefaultValue(){
+        List<MatchListener> allMatchListeners = this.comp.getMatchListeners();
 
-        assertSame(0, allJournalists.size());
+        assertSame(0, allMatchListeners.size());
     }
 
     /**
@@ -182,56 +182,56 @@ public abstract class CompetitionTest {
     }
 
     /**
-        tests if the method addJournalist adds a journalist to the list of journalists
+        tests if the method addMatchListener adds a matchListener to the list of matchListeners
      */
     @Test
-    public void testAddJournalist(){
-        Journalist j1 = new ReportResultsJournalist("foo");
-        Journalist j2 = new ReportResultsJournalist("boo");
+    public void testAddMatchListener(){
+        MatchListener j1 = new ReportResultsJournalist("foo", new ArrayList<String>());
+        MatchListener j2 = new ReportResultsJournalist("boo", new ArrayList<String>());
 
-        this.comp.addJournalist(j1);
-        this.comp.addJournalist(j2);
+        this.comp.addMatchListener(j1);
+        this.comp.addMatchListener(j2);
 
-        List<Journalist> allJournalists = this.comp.getJournalists();
-        assertTrue(allJournalists.contains(j1));
-        assertTrue(allJournalists.contains(j2));
+        List<MatchListener> allMatchListeners = this.comp.getMatchListeners();
+        assertTrue(allMatchListeners.contains(j1));
+        assertTrue(allMatchListeners.contains(j2));
     }
 
     /**
-        tests if the method removeJournalist removes a journalist from the list of journalists
+        tests if the method removeMatchListener removes a matchListener from the list of matchListeners
         if it already exists
      */
     @Test
-    public void testRemoveJournalist(){
-        Journalist j1 = new ReportResultsJournalist("foo");
-        Journalist j2 = new ReportResultsJournalist("boo");
+    public void testRemoveMatchListener(){
+        MatchListener j1 = new ReportResultsJournalist("foo", new ArrayList<String>());
+        MatchListener j2 = new ReportResultsJournalist("boo", new ArrayList<String>());
 
-        this.comp.addJournalist(j1);
-        this.comp.addJournalist(j2);
+        this.comp.addMatchListener(j1);
+        this.comp.addMatchListener(j2);
 
-        //verify that the journalist exists
-        List<Journalist> allJournalists = this.comp.getJournalists();
-        assertTrue(allJournalists.contains(j1));
-        assertTrue(allJournalists.contains(j2));
+        //verify that the matchListeners exists
+        List<MatchListener> allMatchListeners = this.comp.getMatchListeners();
+        assertTrue(allMatchListeners.contains(j1));
+        assertTrue(allMatchListeners.contains(j2));
 
-        //remove the journalist j1
-        this.comp.removeJournalist(j1);
+        //remove the MatchListener j1
+        this.comp.removeMatchListener(j1);
 
-        //assert that the journalist j1 is removed while j2 always exists
-        allJournalists = this.comp.getJournalists();
-        assertFalse(allJournalists.contains(j1));
-        assertTrue(allJournalists.contains(j2));
+        //assert that the MatchListener j1 is removed while j2 always exists
+        allMatchListeners = this.comp.getMatchListeners();
+        assertFalse(allMatchListeners.contains(j1));
+        assertTrue(allMatchListeners.contains(j2));
     }
 
     /**
-        test if the report of each match is diffused to all the journalists
+        test if the report of each match is diffused to all the matchListeners
         the method diffuseResult must be called a number of times equivilent to the number of match played
         the number of matchs played is the sum of rankings (since every match will increase the ranking by 1, be it a draw or victory)
      */
     @Test 
-    public void testDiffuseResult(){
-        this.comp.addJournalist(new MockJournalist("mock"));
-        this.comp.addJournalist(new MockJournalist("mock"));
+    public void testFireMatchEvent(){
+        this.comp.addMatchListener(new MockJournalist("mock"));
+        this.comp.addMatchListener(new MockJournalist("mock"));
         this.comp.play();
 
         //determine the number of matchs played
@@ -243,8 +243,8 @@ public abstract class CompetitionTest {
         }
 
         //test how many times the results have been diffused
-        for(Journalist journalist : this.comp.getJournalists()){
-            MockJournalist mockJournalist = (MockJournalist) journalist;
+        for(MatchListener matchListener : this.comp.getMatchListeners()){
+            MockJournalist mockJournalist = (MockJournalist) matchListener;
             assertTrue(mockJournalist.getNbCall() >= nbMatchPlayed);
         }
     }

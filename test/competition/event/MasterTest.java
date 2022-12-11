@@ -49,7 +49,7 @@ public class MasterTest extends CompetitionTest{
         this.players.add(new Competitor("foo1"));
         this.players.add(new Competitor("foo2"));
 
-        this.journalists = new ArrayList<Journalist>();
+        this.matchListeners = new ArrayList<MatchListener>();
 
         try{
             this.master = new Master(this.players);

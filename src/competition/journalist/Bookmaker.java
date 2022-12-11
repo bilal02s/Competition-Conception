@@ -11,21 +11,24 @@ import competition.*;
     keeping track of competitor's quotes and their variation from match to match.
  */
 public class Bookmaker extends Journalist{
+    /** a map, mapping quotations to competitors */
     protected Map<Competitor, Integer> quotations;
-    protected final int initValue;
-    protected final int changeValue;
+    /** the initial value of quotations for new competitors */
+    protected int initValue;
+    /** the delta value added or substracted to the competitor's quotation, after a win or loss */
+    protected int deltaValue;
 
     /**
         contructs a new bookmaker, declare the quotations hashmap.
         @param name this bookmaker's name
-        @param new the list of news format
+        @param news the list of news format
      */
     public Bookmaker(String name, List<String> news){
         super(name, news);
 
         this.quotations = new HashMap<Competitor, Integer>();
         this.initValue = 1;
-        this.changeValue = 1;
+        this.deltaValue = 1;
     }
 
     /**
@@ -52,8 +55,8 @@ public class Bookmaker extends Journalist{
         }
 
         //compute new quotation
-        int winnerQuotation = Math.max(1, this.quotations.get(winner) - this.changeValue);
-        int loserQuotation = this.quotations.get(loser) + this.changeValue;
+        int winnerQuotation = Math.max(1, this.quotations.get(winner) - this.deltaValue);
+        int loserQuotation = this.quotations.get(loser) + this.deltaValue;
 
         //put results in the map
         this.quotations.put(winner, winnerQuotation);
@@ -64,7 +67,7 @@ public class Bookmaker extends Journalist{
         this method will print to the console a message/news corresponding the report it receives in parameter for a given match.
         @param report the match's report
      */
-    public void printReport(Report report){
+    protected void printReport(Report report){
         //retireve the players
         Competitor winner = report.getWinner();
         Competitor loser = report.getLoser();
@@ -86,5 +89,45 @@ public class Bookmaker extends Journalist{
 
         //displaying the message
         this.displayer.writeMessage(comment);
+    }
+
+    /**
+        returns this bookmaker's quotations.
+        @return this bookmaker's quotations.
+     */
+    public Map<Competitor, Integer> getQuotations(){
+        return this.quotations;
+    }
+
+    /**
+        Sets the init value quotation of this bookmaker
+        @param initValue the new initial quotation value
+     */
+    public void setInitValue(int initValue){
+        this.initValue = initValue;
+    }
+
+    /**
+        Returns the value of which new competitor's quotations are initialised
+        @return quotation's initial value
+     */
+    public int getInitValue(){
+        return this.initValue;
+    }
+
+    /**
+        Sets the delta change value of this bookmaker
+        @param deltaValue the new delta value
+     */
+    public void setDeltaValue(int deltaValue){
+        this.deltaValue = deltaValue;
+    }
+
+    /**
+        Returns the delta value, which is the value added or subtracted from competitor's quotation
+        @return this bookmaker's deltaValue
+     */
+    public int getDeltaValue(){
+        return this.deltaValue;
     }
 }

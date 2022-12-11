@@ -42,7 +42,7 @@ util : src/util/*.java
 #main : src/Main.java 
 #	javac -sourcepath src -d classes src/Main.java
 
-test : mock testCompetition testReport testJournalist testEvent testMatch
+test : mock testUtil testCompetition testReport testJournalist testEvent testMatch testMatchEvent
 
 mock : mockMatch mockIO
 
@@ -61,11 +61,17 @@ testEvent : test/competition/event/*.java
 testMatch : test/competition/match/*.java
 	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/match/*.java
 
+testMatchEvent : test/competition/match/event/*.java
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/match/event/*.java
+
 testJournalist : test/competition/journalist/*.java
 	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/journalist/*.java
 
 testReport : test/competition/journalist/report/*.java 
 	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/competition/journalist/report/*.java
+
+testUtil : test/util/*.java
+	javac -d classes -cp classes:junit-platform-console-standalone-1.9.1.jar test/util/*.java
 
 docs : src/competition/*.java
 	javadoc competition -sourcepath src -d docs -subpackages competition
