@@ -1,5 +1,20 @@
-## Projet - Compétitions Sportives
+# Projet - Compétitions Sportives
 ---
+
+## Table of Contents
+1. [Files Hierarchy](#files)
+2. [Objectives](#objectives)
+3. [Conception](#conception)
+   * [Version 1](#version-1)
+   * [Version 2](#version-2)
+   * [Version 3](#version-3)
+4. [How to Run](#how-to)
+   * [Getting the Files](#getting-the-files)
+   * [Generating javadocs](#generate-javadoc-files)
+   * [Compile Source Files](#compile-source-files)
+   * [Compile & Execute the tests](#compile-and-execute-the-tests)
+   * [Generate the Executable File](#generate-the-executable-jar-files)
+   * [Execute the Program](#execute-the-program)
 
 ## Done by
 
@@ -8,7 +23,7 @@
 
 ---
 
-## Files
+## Files Hierarchy
 
 ```text
 l3s5-projet-coo/
@@ -216,7 +231,7 @@ You will notice a new directory docs.
 
 
 
-### Compile .java files
+### Compile Source Files
 * In a bash terminal
 
 1. Go to the root folder (the folder containing src and test directory)
